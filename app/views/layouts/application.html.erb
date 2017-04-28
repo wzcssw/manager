@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html ng-app='TxOlcrmAdmin'>
+<head>
+  <title>影像云管理系统</title>
+  <%= stylesheet_link_tag    'admin', media: 'all'%>
+  <%= yield :stylesheets %>
+  <%= javascript_include_tag 'admin' %>
+  <%= yield :javascripts %>
+  <%= csrf_meta_tags %>
+  <link rel="shortcut icon" type="image/x-icon" media="screen" href="assets/tongxin_sm.png">
+  <script type="text/javascript">
+    var home_page = "user";
+    var menu_arr = [{name:'医院',url:'#/user'},{name:'阅片中心',url:'#/role'}]
+  </script>
+  <style type="text/css" >
+  html {
+    width: 100%;
+    height: 100%;
+  }
+  body {
+    width: 100%;
+    height: 100%;
+  }
+  .content{
+    width: 100%;
+    height: 100%;
+  }
+
+  .content_n{
+    width: 100%;
+    background-color: rgb(68,74,99);
+    border-width: 0;
+    border-radius: 0;
+  }
+
+  .content_c{
+    padding-left:0px;
+    padding-right:0px;
+    position: absolute;
+    left: 0;
+    top: 50px;
+    bottom: 0;
+    width: 100%;
+  }
+  .content_c_c{
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .content_c_c_l{
+    height:100%;
+    width:100px;
+    background-color: #2e374b;
+  }
+  .main_menu{
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+  }
+  .main_menu_active{
+    background-color: rgb(27, 39, 58);
+  }
+  .content_c_c_c{
+    height: 100%;
+    position: absolute;
+    left: 100px;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow-x: auto;
+    overflow-y: auto;
+  }
+  </style>
+</head>
+<body>
+  <style type="text/css">
+    .active_focus {
+      background-color: #26A0C6;
+    }
+  </style>
+  <div class="content" ng-controller="adminController">
+  <div id="navigation_div" role="navigation" class="navbar navbar-default content_n" >
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <img class="navbar-brand" src="/assets/tongxin_md.png" alt="logo" style="width: 50px;"/>
+      </div>
+      <div class="navbar-header">
+        <a class="navbar-brand" rel="home" href="/" style='color:white'>影像云管理系统</a>
+      </div>
+      <div class="collapse navbar-collapse">
+        <div class="pull-right">
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="true" style='color:white'><%= session[:user]['realname'] %><span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu" style='background-color: rgb(68,74,99)'>
+                <li><%= link_to content_tag(:div, content_tag(:i, ""), class: "glyphicon glyphicon-lock") + "退出", logout_sessions_path, method: :get, style: 'color:white' %></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% flash.each do |name, msg| %>
+        <% if msg.is_a?(String) %>
+            <div class="alert alert-<%= name.to_s == 'notice' ? 'success' : 'danger' %>">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+              <%= content_tag :div, msg.html_safe, :id => "flash_#{name}" %>
+            </div>
+        <% end %>
+    <% end %>
+    <div class="container-fluid content_c">
+      <div class="content_c_c">
+        <div class="content_c_c_l">
+          <div class="main_menu" ng-class="{'main_menu_active':cur_menu==menu}" ng-repeat="menu in menu_arr" ng-click="open_menu(menu)" >
+            <span class="glyphicon glyphicon-user" ng-class="menu.name == '医生' ? ['glyphicon','glyphicon-user']: ['glyphicon','glyphicon-file']" style="color: #689bf3"></span>&nbsp;{{menu.name}}
+          </div>
+        </div>
+        <div class="content_c_c_c">
+        <%= yield %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    app.controller('adminController', ['$scope','$stateParams', '$location','$state',function($scope,$stateParams,$location,$state) {
+      $scope.menu_arr = window.menu_arr;
+      $scope.cur_menu = null;
+      $scope.open_menu = function(menu){
+        window.location.href = menu.url;
+        $scope.cur_menu = menu;
+      }
+      var now_href = $location.url();
+      var tmp_menu = $scope.menu_arr.find(function(menu){
+        if(("#"+now_href).indexOf(menu.head_url) == 0){
+          return true;
+        }
+      });
+      if(now_href == ""){
+        tmp_menu = $scope.menu_arr[0];
+      }
+      if(tmp_menu){
+        $scope.cur_menu = tmp_menu;
+      }
+    }]);
+  </script>
+</body>
+</html>

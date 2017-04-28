@@ -1,0 +1,247 @@
+<style>
+    a {
+        cursor: pointer;
+    }
+    
+    th {
+        text-align: center;
+    }
+    
+    td {
+        text-align: center;
+        vertical-align: middle !important;
+        padding: 5px 5px 5px 5px;
+    }
+    
+    .content_box {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-color: black;
+    }
+    
+    .left_box {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0px;
+        /*height: 100%;*/
+        float: left;
+        width: 300px;
+        border: 1px solid;
+        border-color: white;
+    }
+    
+    .left_expand_c {
+        animation: left_expand 0.7s;
+        animation-fill-mode: forwards;
+    }
+    
+    @keyframes left_expand {
+        from {
+            left: -300px;
+        }
+        to {
+            left: 0px;
+        }
+    }
+    
+    .left_unexpand_c {
+        animation: left_unexpand 0.7s;
+        animation-fill-mode: forwards;
+    }
+    
+    @keyframes left_unexpand {
+        from {
+            left: 0px;
+        }
+        to {
+            left: -300px;
+        }
+    }
+    
+    .left_button {
+        position: absolute;
+        top: 40%;
+        left: 299px;
+        height: 50px;
+        width: 15px;
+        z-index: 20;
+        border-radius: 0px 7px 7px 0px;
+        background-color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    }
+    
+    .center_box {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 302px;
+        right: 0;
+        /*height: 100%;*/
+        /*float: left;*/
+    }
+    
+    .center_expand_c {
+        animation: center_expand 0.7s;
+        animation-fill-mode: forwards;
+    }
+    
+    @keyframes center_expand {
+        from {
+            left: 302px;
+        }
+        to {
+            left: 0px;
+        }
+    }
+    
+    .center_unexpand_c {
+        animation: center_unexpand 0.7s;
+        animation-fill-mode: forwards;
+    }
+    
+    @keyframes center_unexpand {
+        from {
+            left: 0px;
+        }
+        to {
+            left: 302px;
+        }
+    }
+    
+    .table_info {
+        color: white;
+        width: 100%;
+        padding: 5px 5px 5px 5px;
+    }
+    
+    .tr_larger {
+        font-size: 1.6em;
+    }
+    
+    .td_left {
+        text-align: left;
+    }
+    
+    .td_right {
+        text-align: right;
+    }
+    
+    .table-head {
+        height: 38px;
+    }
+    
+    .table-body::-webkit-scrollbar {
+        background: transparent;
+        width: 1px;
+    }
+    
+    .table-body {
+        position: absolute;
+        top: 38px;
+        left: 0;
+        right: 0;
+        bottom: 70px;
+        overflow-y: auto;
+        background-color: white;
+    }
+    
+    .table-body:hover::-webkit-scrollbar {
+        background: lightyellow;
+    }
+    
+    .table-body:hover::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+    
+    .table-body:hover::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+</style>
+<div class="content_box">
+    <!--ng-class="{true:'left_expand_c',false:'left_unexpand_c'}[is_expand]"-->
+    <div class="left_box">
+        <div class="left_button" ng-click="expand()" style="display: none;">
+            <span class="glyphicon" ng-class="{true:'glyphicon-chevron-left',false:'glyphicon-chevron-right'}[is_expand]"></span>
+        </div>
+        <div style="width: 100%;height: 100%; position: relative;overflow-y: auto;">
+            <table class="table-bordered table_info">
+                <colgroup>
+                    <col style="width: 80px;" />
+                    <col />
+                </colgroup>
+                <tr class="tr_larger">
+                    <td colspan="2" style="text-align: center;">远程软件</td>
+                </tr>
+                <tr>
+                    <td style="width: 50%;">
+                        <a href="" target="_blank">
+                            <img src="assets/teamviewer-logo-big.svg" style="height: 40px;"></img>
+                        </a>
+                    </td>
+                    <td style="width: 50%;">
+                        <a target="_blank">安装指南</a>
+                    </td>
+                </tr>
+            </table>
+            <table class="table-bordered table_info">
+                <colgroup>
+                    <col style="width: 80px;" />
+                    <col />
+                </colgroup>
+                <tr class="tr_larger">
+                    <td colspan="2" style="text-align: center;">患者信息</td>
+                </tr>
+                <tr class="tr_larger">
+                    <td class="td_left">姓名</td>
+                    <td class="td_left">{{patient.patient_name}}</td>
+                </tr>
+                <tr class="tr_larger">
+                    <td class="td_left">性别</td>
+                    <td class="td_left">{{patient.patient_sex | patientSexDesc}}</td>
+                </tr>
+                <tr class="tr_larger">
+                    <td class="td_left">年龄</td>
+                    <td class="td_left">{{patient.patient_age}}岁</td>
+                </tr>
+                <tr class="tr_larger">
+                    <td class="td_left">电话</td>
+                    <td class="td_left">{{patient.patient_phone}}</td>
+                </tr>
+                <tr>
+                    <td class="td_left">检查项目</td>
+                    <td class="td_left">{{patient.project_name}}</td>
+                </tr>
+                <tr>
+                    <td class="td_left">检查部位</td>
+                    <td class="td_left">{{patient.body_description | bodyDesc}}</td>
+                </tr>
+                <tr>
+                    <td class="td_left">检查技术</td>
+                    <td class="td_left" ng-bind-html="patient.check_technique | checkTechniqueDesc"></td>
+                </tr>
+                <tr>
+                    <td class="td_left">影像表现</td>
+                    <td class="td_left">{{patient.expression}}</td>
+                </tr>
+                <tr>
+                    <td class="td_left">影像诊断</td>
+                    <td class="td_left">{{patient.diagnose}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <!--ng-class="{true:'center_unexpand_c',false:'center_expand_c'}[is_expand]"-->
+    <div class="center_box">
+        <div style="width: 100%;height: 99.8%; position: relative;">
+            <film></film>
+        </div>
+    </div>
+    <div style="clear: both;">
+    </div>
+</div>

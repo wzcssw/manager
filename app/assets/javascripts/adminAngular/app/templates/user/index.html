@@ -1,0 +1,107 @@
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+    
+    .modal_input {
+        margin-bottom: 7px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="table-operation">
+        <h3>用户管理</h3>
+        <div style="height:30px;">
+            <button style="float: right;width: 5%;display: none" ng-click="get_page_data()" class="btn btn-default">搜索</button>
+            <input style="width: 13%;float: right;margin-left: 5px;margin-right: 5px;display: none" type="text" ng-model="q" class="form-control" id="hos_q" placeholder="名称 、拼音">
+            <select style="width: 6%;float: right;display: none" ng-change="get_page_data()" ng-model="role_id" class="form-control">
+          <option value="">全部</option>
+          <option ng-repeat="role in roles" value={{role.id}}>{{role.name}}</option>
+        </select>
+            <button type="button" style="float: left;" class="btn btn-primary" ng-click="edit_user('添加账号')">添加账户</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover" style="margin-top:20px;">
+        <tr style="background-color:#f6f6f6;">
+            <th>帐户名</th>
+            <th>真实姓名</th>
+            <th>医院名称</th>
+            <th>所属角色</th>
+            <th>电话</th>
+            <th>报告医生</th>
+            <th>添加人</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="row in data_row.row_arr">
+            <td>{{row.name}}</td>
+            <td>{{row.realname}}</td>
+            <td>{{row.hospital.name}}</td>
+            <td>{{row.role.description}}</td>
+            <td>{{row.phone}}</td>
+            <td>{{row.report_doctor}}</td>
+            <td>{{row.add_from}}</td>
+            <td>
+                <a class="btn btn-primary btn-xs color_box" ng-click="edit_user('编辑用户',row)">编辑</a>
+                <a class="btn btn-xs color_box" ng-class="{true:'btn-success',false:'btn-danger'}[row.is_delete]" ng-click="change_state(row)">{{row.is_delete?'启用':'禁用'}}</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class='pagination' style="margin-top: 50px;float: right">
+        <uib-pagination style="margin-left: 10px;margin-top: -20px;" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页" ng-change="pageChanged()" items-per-page="data_row.page_size" total-items="data_row.total_count" ng-model="data_row.current_page"
+            max-size="maxSize" class="pagination-sm" boundary-links="true" rotate="false"></uib-pagination>
+    </div>
+</div>
+
+<script type="text/ng-template" id="edit_user.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">账户名</label>
+                <div class="col-sm-10 modal_input">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.name" placeholder="账户名">
+                </div>
+                <label for="name" class="col-sm-2 control-label">医院名称</label>
+                <div class="col-sm-10 modal_input">
+                    <select ng-options="hospital as hospital.name for hospital in hospitals track by hospital.id" ng-model="data.hospital" class="form-control ng-pristine ng-untouched ng-valid ng-empty"></select>
+                </div>
+                <label for="name" class="col-sm-2 control-label">真实姓名</label>
+                <div class="col-sm-10 modal_input">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.realname" placeholder="真实姓名">
+                </div>
+                <label for="name" class="col-sm-2 control-label">角色</label>
+                <div class="col-sm-10 modal_input">
+                    <select ng-options="role as role.description for role in roles track by role.id" ng-model="data.role" class="form-control ng-pristine ng-untouched ng-valid ng-empty"></select>
+                </div>
+                <label for="name" class="col-sm-2 control-label" ng-show="can_dh_show()">绑定医院</label>
+                <div class="col-sm-10 modal_input" ng-show="can_dh_show()">
+                    <label class="checkbox-inline" ng-repeat="h in hospitals">
+                        <input type="checkbox" id="{{h.id}}" ng-model="h.is_checked" />{{h.name}} 
+                    </label>
+                </div>
+                <label class="col-sm-2 control-label" ng-show="data.role.name=='医生'">报告医生</label>
+                <div class="col-sm-10 modal_input" ng-show="data.role.name=='医生'">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.report_doctor" placeholder="报告医生">
+                </div>
+                <label for="name" class="col-sm-2 control-label">电话</label>
+                <div class="col-sm-10 modal_input">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.phone" placeholder="电话">
+                </div>
+                <div>
+                    <label for="name" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-10 modal_input">
+                        <input ng-model="data.password" type="password" class="form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="密码">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <span ng-show="has_err" style="float:left;margin-left:30px;color:red;">{{err_msg}}</span>
+            <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>

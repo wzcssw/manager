@@ -1,0 +1,25 @@
+<div class="modal-header" style="text-align: center;">
+    <h3 class="modal-title">胶片类型</h3>
+</div>
+<div class="modal-body">
+    <div class="form-group">
+        <label class="checkbox-inline">
+            <input type="checkbox" id="chk_film" ng-model="film"> 纸质胶片
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="chk_electronic_film" ng-model="electronic_film"> 电子胶片
+        </label>
+    </div>
+    <div class="form-inline" ng-show="electronic_film">
+        <div class="form-group">
+            <label class="sr-only" for="i_access_code">访问码</label>
+            <input type="text" class="form-control" id="i_access_code" disabled="disabled" ng-model="access_code" placeholder="访问码">
+        </div>
+        <label ng-show="is_expired">已过期</label>
+        <button type="button" class="btn btn-primary" ng-click="generate_code()">重新生成</button>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+</div>

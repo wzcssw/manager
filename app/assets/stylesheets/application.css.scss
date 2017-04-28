@@ -1,0 +1,61 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import 'sweet-alert.css';
+.ion-ios-arrow-back {
+    display: none!important;
+}
+
+.page__content {
+    background-color: #efeff4!important;
+}
+
+input::-webkit-input-placeholder {
+    color: #cccccc!important;
+}
+
+textarea::-webkit-input-placeholder {
+    color: #cccccc!important;
+}
+
+.navigation-bar {
+    background: #1CB1B1;
+}
+
+[ng\:cloak],
+[ng-cloak],
+[data-ng-cloak],
+[x-ng-cloak],
+.ng-cloak,
+.x-ng-cloak,
+.ng-hide {
+    display: none !important;
+}
+
+ng\:form {
+    display: block;
+}
+
+.ng-animate-start {
+    clip: rect(0, auto, auto, 0);
+    -ms-zoom: 1.0001;
+}
+
+.ng-animate-active {
+    clip: rect(-1px, auto, auto, 0);
+    -ms-zoom: 1;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+//隐藏返回顶部按钮
+.hm-t-go-top {
+    display: none!important;
+}

@@ -1,0 +1,4 @@
+development: [ 127.0.0.1 ]
+test: [ 127.0.0.1 ]
+production: [ 1c5a6675c7f74e70.m.cnbjalicm12pub001.ocs.aliyuncs.com ]
+staging: [ 112.126.64.124 ]

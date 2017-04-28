@@ -1,0 +1,2 @@
+class DcClient < ApplicationRecord
+end

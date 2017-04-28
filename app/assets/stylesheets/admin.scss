@@ -1,0 +1,308 @@
+// Place all the styles related to the admin controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import 'sweet-alert.css';
+@import 'loading-bar.min.css';
+@import 'datetimepicker.css';
+@import 'jquery-ui.min.css';
+@import 'cornerstone.min.css';
+@import 'film.css';
+// tree
+@import 'tree/angular-ui-tree.min';
+@import 'tree/tree';
+.table {
+    margin-bottom: 0px;
+}
+
+table tbody {
+    padding-top: 10px;
+}
+
+.valign tbody tr {
+    height: 20px;
+}
+
+.valign tbody tr td {
+    padding: 0px;
+    vertical-align: middle;
+}
+
+
+/*-- change navbar dropdown color --*/
+
+.navbar {
+    margin-bottom: 0;
+}
+
+.navbar-default .navbar-nav .open .dropdown-menu>li>a,
+
+
+// .dropdown:hover .dropdown-menu {
+//     display: block;
+//     background-color: #2cbae6;
+// }
+.navbar-default .navbar-nav>li>a {
+    color: #fff;
+}
+
+// .bg_red {
+//     background-color: #FC8792;
+// }
+// .bg_gray {
+//     background-color: #CDCDCD;
+// }
+// .title-panel {
+//     font-size: 18px;
+//     font-weight: bold;
+// }
+// .div-body-panel {
+//     padding: 5px 5px 5px 5px;
+// }
+// .display-none {
+//     display: none;
+// }
+// .list-content {
+//     padding: 10px 0 10px 20px;
+//     transition: margin 1s;
+//     -webkit-transition: margin 1s;
+//     .table {
+//         margin-top: 10px;
+//     }
+//     .table th {
+//         vertical-align: middle;
+//     }
+//     .table tbody td {
+//         vertical-align: middle;
+//     }
+//     select#status,
+//     select#sort,
+//     select#event_info {
+//         width: 200px;
+//         display: inline-block;
+//         float: right;
+//     }
+// }
+// .list-content.has-city {
+//     margin-left: 240px;
+// }
+// .list-content.no-city {
+//     margin-left: 30px;
+// }
+// .error-span {
+//     color: red;
+//     font-size: 12px;
+//     margin-left: 10px;
+// }
+// /* 弹出列表选择样式 */
+// .wb_label {
+//     position: relative;
+//     min-width: 180px;
+//     height: 40px;
+//     float: left;
+//     border: 1px solid #DAD8D8;
+//     margin-right: 15px;
+//     margin-bottom: 10px;
+//     padding: 8px;
+// }
+// .wb_name {
+//     float: left;
+//     min-width: 77px;
+//     text-align: left;
+//     margin-left: 10px;
+// }
+// .show_box_check {
+//     float: left;
+//     width: 20px;
+//     height: 20px;
+//     cursor: pointer;
+// }
+// .form-wait-settle {
+//     font-size: 13px;
+//     width: 100%;
+//     span {
+//         margin: 0 15px 0 0;
+//     }
+// }
+// .input-group-btn {
+//     display: inline-block;
+// }
+// .list-content .form-control {
+//     width: 200px;
+//     display: inline-block;
+// }
+// .search-form {
+//     position: relative;
+//     float: right;
+// }
+// .btn-xs.authenticating,
+// .btn-xs.unauth,
+// .btn-xs.nopass_auth {
+//     background-color: #FD9826;
+//     color: #ffffff;
+//     border: 0px;
+// }
+// .btn-xs.auth {
+//     background-color: #22DB45;
+//     color: #ffffff;
+//     border: 0px;
+// }
+// .font-red {
+//     color: #ff0000;
+// }
+// .link-font {
+//     color: #2cbae6;
+//     &:hover {
+//         color: #2cbaee;
+//         text-decoration: none;
+//     }
+// }
+// .content-panel {
+//     .create-order-left {
+//         padding: 20px;
+//     }
+// }
+// .create-order-table {
+//     width: 100%;
+//     text-align: left;
+//     th {
+//         width: 120px;
+//         text-align: left;
+//     }
+//     td {
+//         text-align: left;
+//         height: 45px;
+//     }
+// }
+// .create-order-left {
+//     width: 50%;
+//     border-right: 1px solid #eeeeee;
+//     float: left;
+//     input {
+//         width: 210px;
+//     }
+// }
+// .create-order-right {
+//     width: 50%;
+//     padding: 20px 40px;
+//     float: right;
+// }
+// .pro-btn {
+//     border: solid #eeeeee 1px;
+// }
+// .pro-btn.checked {
+//     background-color: #62c462;
+//     color: white;
+//     &:hover {
+//         background-color: #51a351;
+//         color: white;
+//     }
+//     &:visited {
+//         color: white;
+//     }
+// }
+// .search-ipt {
+//     float: left;
+//     height: 30px;
+//     padding-left: 5px;
+// }
+// .create-order-keyword-btn {
+//     height: 30px;
+//     width: 30px;
+//     float: left;
+//     border: 1px solid #CCCCCC;
+//     cursor: pointer;
+//     &:hover {
+//         background-color: #eeeeee;
+//     }
+//     &:active {
+//         background-color: #cccccc;
+//     }
+//     text-align: center;
+//     line-height:30px;
+//     color: #696969;
+// }
+// .create-order-keyword-exit {
+//     height: 30px;
+//     margin-left: 10px;
+//     background-color: #eeeeee;
+//     border: 1px solid #cccccc;
+// }
+// .create-order-select {
+//     margin-top: 5px;
+//     height: 26px;
+//     width: 210px;
+//     -webkit-appearance: none;
+//     padding-left: 10px;
+// }
+// .create-order-project-list {
+//     margin-top: 10px;
+//     height: 300px;
+//     overflow: auto;
+//     .project-list-li {
+//         height: 30px;
+//         line-height: 30px;
+//         padding-left: 10px;
+//         cursor: pointer;
+//         &:hover {
+//             background-color: #eeeeee;
+//         }
+//     }
+//     .project-list-li.checked {
+//         color: #ffffff;
+//         background-color: #62c462;
+//         font-weight: 900;
+//     }
+// }
+// .checked-object-list-div {
+//     height: 30px;
+//     line-height: 30px;
+//     width: 70%;
+//     border: 1px solid #CCCCCC;
+//     padding-left: 5px;
+//     display: none;
+//     font-size: 12px;
+//     margin-bottom: 5px;
+//     color: #696969;
+//     .project-name {
+//         width: 90%;
+//         white-space: nowrap;
+//         text-overflow: ellipsis;
+//         -o-text-overflow: ellipsis;
+//         overflow: hidden;
+//         display: inline-block;
+//         float: left;
+//     }
+//     .close-list {
+//         display: inline-block;
+//         color: red;
+//         width: 20px;
+//         height: 10px;
+//         cursor: pointer;
+//         margin-top: -2px;
+//         font-size: 14px;
+//         float: right;
+//         &:hover {
+//             font-size: 20px;
+//         }
+//     }
+// }
+// .replace-select {
+//     display: none;
+// }
+// .error-tips {
+//     font-size: 12px;
+//     color: red;
+//     margin-left: 12px;
+//     display: none;
+// }
+// .modal.fade.ng-isolate-scope.in {
+//     background: rgba(100, 100, 100, 0.7);
+// }
+// .red {
+//     color: red;
+// }
+// .green {
+//     color: green;
+// }

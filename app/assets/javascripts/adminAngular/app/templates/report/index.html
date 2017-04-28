@@ -1,0 +1,311 @@
+<style>
+    a {
+        cursor: pointer;
+    }
+    
+    .page_content {
+        position: absolute;
+        top: 40px;
+        bottom: 0px;
+        width: 100%;
+        /*height: 100%;*/
+        overflow: auto;
+        border-top: 1px solid;
+    }
+    
+    .page_title {
+        height: 40px;
+        width: 100%;
+    }
+    
+    .left_panel {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .patient_info_box {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 5px;
+        border-color: #267ccc;
+        background-color: rgb(242, 242, 242);
+    }
+    
+    .cur_date {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .func_button {
+        width: 98%;
+        height: 70px;
+    }
+    
+    .table_header {
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 18px;
+        text-align: center;
+    }
+    
+    .table_content_cursor {
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        margin-left: 10px;
+    }
+    
+    .table_content {
+        font-weight: bold;
+        text-align: center;
+    }
+    
+    .cursor {
+        color: white;
+        background-color: rgb(70, 120, 178);
+        font-size: 18px;
+        width: 90%;
+        border-radius: 0 20px 20px 0;
+        text-align: center;
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    
+    .clear_padding {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    .clear_margin {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    
+    .trow {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        position: relative;
+        min-height: 50px;
+    }
+    
+    .prow {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        position: static;
+        display: flex;
+        align-items: center;
+    }
+    
+    .prow_content {
+        width: 100%;
+        float: left;
+        background-color: rgb(242, 242, 242);
+        border-radius: 8px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .prow_content_cur {
+        border: 2px solid;
+        border-color: rgb(70, 120, 178);
+    }
+    
+    .orange {
+        background-color: #3ec595;
+        border-color: #3ec595;
+    }
+    
+    .grey {
+        background-color: grey;
+        border-color: grey;
+    }
+    
+    th {
+        text-align: center
+    }
+    
+    .table-striped>tbody>tr:nth-child(2n-2)>td,
+    .table-striped>tbody>tr:nth-child(2n-2)>th {
+        background-color: rgb(242, 242, 242);
+    }
+    
+    .table-striped>tbody>tr:nth-child(2n-1)>td,
+    .table-striped>tbody>tr:nth-child(2n-1)>th {
+        background-color: rgb(255, 255, 255);
+    }
+    
+    .print {
+        background-color: #4da5fa;
+        border-color: #4da5fa;
+    }
+    
+    body {
+        background-color: rgb(242, 242, 242);
+    }
+    
+    .table-head {
+        height: 38px;
+    }
+    
+    .table-body::-webkit-scrollbar {
+        background: transparent;
+        width: 1px;
+    }
+    
+    .table-body {
+        position: absolute;
+        top: 38px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        overflow-y: auto;
+    }
+    
+    .table-body:hover::-webkit-scrollbar {
+        background: lightyellow;
+    }
+    
+    .table-body:hover::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+    
+    .table-body:hover::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+    
+    .pagination>.active>a,
+    .pagination>.active>a:hover,
+    .pagination>.active>a:focus,
+    .pagination>.active>span,
+    .pagination>.active>span:hover,
+    .pagination>.active>span:focus {
+        z-index: 3;
+        color: #fff;
+        background-color: #04b0ff;
+        border-color: #04b0ff;
+        cursor: default;
+    }
+    
+    .table>thead>tr>th,
+    .table>thead>tr>td,
+    .table>tbody>tr>th,
+    .table>tbody>tr>td,
+    .table>tfoot>tr>th,
+    .table>tfoot>tr>td {
+        padding: 8px;
+        line-height: 1.42857143;
+        vertical-align: middle;
+        border-top: 1px solid #ddd;
+    }
+    
+    .tr_warning {
+        background-color: #FFCC00;
+    }
+</style>
+<div class="container-fluid" style="height: 100%;overflow: hidden;position: relative;">
+    <div style="width: 100%;height: 100%;">
+        <div style="margin: 30px 0 30px 0">
+            <div class="form-inline">
+                <div style="width:38%;text-align:left;float:left;">
+                    <div class="form-group">
+                        <input ng-model="keyword" type="text" class="form-control" placeholder="检查单号/患者名" ng-keypress="search_keydown($event)" />
+                        <button class="btn btn-default" ng-click="search_patient()">搜索</button>
+                    </div>
+                </div>
+                <div style="width:24%;text-align:center;float:left;">
+                    <div class="form-group cur_date">
+                        <button class="btn btn-success" ng-click="previous_day()">&lt;</button>&nbsp;&nbsp;{{current_date | dateAndWeek}}&nbsp;&nbsp;<button class="btn btn-success" ng-click="next_day()">&gt;</button>
+                    </div>
+                </div>
+                <div style="width:38%;text-align:right;float:left;">
+                    <div class="form-group" style="margin:10px 0 10px 0;">
+                        <label style="font-size: 14px;margin-right: 10px;font-family: 'Microsoft YaHei' ! important;">当日共诊断 :  {{data.daily_examining}}</label>
+                        <select class="form-control" ng-options="h as h.name for h in hospital_arr track by h.id" ng-model="hospital" ng-change="change_hospital()">
+                    </select>
+                    </div>
+                </div>
+                <div style="clear:both;">
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default" style="position: absolute;top: 104px;left: 15px;right: 15px;bottom: 75px;margin-bottom:0;">
+            <div style="width: 100%;height: 100%; position: relative;">
+                <div class="table-head">
+                    <table class="table table-bordered" style="text-align: center;font-family: 'Microsoft YaHei' ! important;">
+                        <colgroup>
+                            <col style="width: 150px;" />
+                            <col style="width: 150px;" />
+                            <col style="width: 200px;" />
+                            <col style="width: 150px;" />
+                            <col style="width: 150px;" />
+                            <col />
+                            <col style="width: 120px;" />
+                            <col style="width: 120px;" />
+                            <col style="width: 200px;" />
+                        </colgroup>
+                        <tr style="font-size: 16px;font-weight: 700">
+                            <td>检查单号</td>
+                            <td>影像号</td>
+                            <td>医院</td>
+                            <td>患者名</td>
+                            <td>检查项目</td>
+                            <td>检查部位</td>
+                            <td>患者报告</td>
+                            <td>审核状态</td>
+                            <td>操作</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="table-body">
+                    <table class="table table-bordered" style="text-align: center;font-family: 'Microsoft YaHei' ! important;">
+                        <colgroup>
+                            <col style="width: 150px;" />
+                            <col style="width: 150px;" />
+                            <col style="width: 200px;" />
+                            <col style="width: 150px;" />
+                            <col style="width: 150px;" />
+                            <col />
+                            <col style="width: 120px;" />
+                            <col style="width: 120px;" />
+                            <col style="width: 200px;" />
+                        </colgroup>
+                        <tr ng-repeat="data in data.row_arr track by $id(data)" ng-class="{'nowrite':'','default':'info','checking':'tr_warning','unpass':'danger','pass':'success'}[get_write_report_corlor(data.report)]">
+                            <td>{{data.hospital_no}}</td>
+                            <td>{{data.film_no}}</td>
+                            <td>{{data.hospital.name}}</td>
+                            <td>{{data.patient_name}}</td>
+                            <td>{{data.project_name}}</td>
+                            <td>
+                                <div ng-bind-html="data.body_description | bodyDesc"></div>
+                            </td>
+                            <td>{{data.report.is_print | patientReportStateDesc}}</td>
+                            <td>
+                                {{get_report_state_desc(data.report.report_state_use)}}
+                            </td>
+                            <td>
+                                <a style="padding: 8px 14px;margin-right:1%" class="btn" ng-class="{false:'btn-success write',true:'btn-primary orange'}[is_full_report(data.report)]" href="#/report/{{data.id}}">{{get_write_report_desc(data.report)}}</a>
+                                <a style="padding: 8px 14px;" ng-disabled="!can_print(data.report)" ng-class="is_full_report(data.report) ? ['btn','btn-primary','print']:['btn','btn-primary','grey']" ng-click="go(data)">打印</a>
+                            </td>
+                        </tr>
+                        <tr ng-show="data.row_arr.length == 0">
+                            <td colspan=8>(无相关数据)</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div style="position: absolute;bottom:0;left: 15px;right: 15px;">
+            <uib-pagination style="float: right;margin-left: 20px;" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页" ng-change="page_change()" items-per-page="page_size" total-items="data.row_count" ng-model="data.current_page" max-size="maxSize"
+                class="pagination-sm" boundary-links="true" rotate="false"></uib-pagination>
+        </div>
+    </div>
+</div>

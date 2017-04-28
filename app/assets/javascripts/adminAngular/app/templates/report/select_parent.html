@@ -1,0 +1,42 @@
+<style>
+    .cur_node {
+        background-color: rgb(0, 122, 204);
+    }
+    
+    .cur_node a {
+        color: white;
+    }
+</style>
+<div class="modal-header " style="text-align: center ">
+    <h4>选择上级节点</h4>
+    <h5>当前选择节点:{{selected_node.name}}</h5>
+</div>
+<div class="modal-body " style="height: 500px; ">
+    <div style="height: 100%;overflow-y: auto;">
+        <div ui-tree data-drag-enabled="false">
+            <ol ui-tree-nodes="" ng-model="data_tree" id="tree-root">
+                <li ng-repeat="node in data_tree" ui-tree-node ng-include="'snodes_renderer.html'"></li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="modal-footer ">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+</div>
+<script type="text/ng-template" id="snodes_renderer.html">
+    <div ui-tree-handle ng-class="{'cur_node':selected_node.id == node.id}">
+        <a ng-if="node.children && node.children.length > 0" data-nodrag ng-click="node.is_expand = !node.is_expand"><span
+        class="glyphicon"
+        ng-class="{
+          'glyphicon-chevron-right': !node.is_expand,
+          'glyphicon-chevron-down': node.is_expand
+        }"></span></a>
+        <span class="glyphicon" ng-class="{'glyphicon-book':node.is_symptom,'glyphicon-folder-open':!node.is_symptom}"></span>
+        <a data-nodrag ng-click="set_cur_node(node)">{{node.name}}</a>
+    </div>
+    <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: !node.is_expand}">
+        <li ng-repeat="node in node.children" ui-tree-node ng-include="'snodes_renderer.html'">
+        </li>
+    </ol>
+</script>

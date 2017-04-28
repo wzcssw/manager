@@ -1,0 +1,430 @@
+<style>
+    a {
+        cursor: pointer;
+    }
+    
+    .header_box {
+        width: 100%;
+        background-color: rgb(242, 242, 242);
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    
+    .content_box {
+        width: 100%;
+        position: absolute;
+        top: 54px;
+        bottom: 0px;
+        padding-top: 10px;
+        padding-left: 20px;
+        padding-right: 20px;
+        background-color: rgb(242, 242, 242);
+    }
+    
+    .margin_left_right {
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+    
+    .box {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    .page_content::-webkit-scrollbar {
+        background: transparent;
+        width: 2px;
+    }
+    
+    .page_content {
+        position: absolute;
+        top: 40px;
+        bottom: 0px;
+        width: 100%;
+        /*height: 100%;*/
+        overflow-y: scroll;
+        overflow-x: hidden;
+        border-top: 1px solid;
+        border-color: rgba(136, 136, 136, 0.4);
+        background-color: #FFFFFF;
+    }
+    
+    .page_content:hover::-webkit-scrollbar {
+        background: lightyellow;
+    }
+    
+    .page_content:hover::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+    
+    .page_content:hover::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+    
+    .page_title {
+        height: 40px;
+        width: 100%;
+        background-color: #FFFFFF;
+    }
+    
+    .left_panel {
+        width: 75%;
+        height: 100%;
+        float: left;
+        overflow: hidden;
+        position: relative;
+        border: 1px solid;
+        border-radius: 5px;
+        border-color: rgba(136, 136, 136, 0.4);
+    }
+    
+    .right_panel {
+        width: 25%;
+        height: 100%;
+        float: left;
+        overflow: hidden;
+        padding-left: 15px;
+    }
+    
+    .patient_info_box {
+        border-style: solid;
+        border-width: 2px;
+        border-radius: 5px;
+        border-color: #04b0ff;
+        background-color: #FFFFFF;
+    }
+    
+    .cur_date {
+        font-size: 20px;
+        font-weight: bold;
+    }
+    
+    .func_button {
+        width: 98%;
+        height: 70px;
+    }
+    
+    .table_header {
+        font-size: 18px;
+        font-weight: bold;
+        line-height: 18px;
+        text-align: center;
+        border-style: solid;
+        border-width: 0 1px 0 0;
+        border-color: rgba(136, 136, 136, 0.4);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .table_content_cursor {
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        margin-left: 50px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .table_content {
+        font-weight: bold;
+        text-align: center;
+        /*border-style: solid;
+        border-width: 0 0 0 1px;
+        border-color: rgba(136, 136, 136, 0.4);*/
+        position: relative;
+    }
+    
+    .table_content_bolder {
+        position: absolute;
+        left: -1px;
+        top: -60px;
+        bottom: -80px;
+        width: 1px;
+        background-color: rgba(136, 136, 136, 0.4);
+    }
+    
+    .table_content_empty {
+        font-weight: bold;
+        text-align: center;
+        border-style: solid;
+        border-width: 0 0 0 1px;
+        border-color: rgba(136, 136, 136, 0.4);
+        height: 100%;
+    }
+    
+    .cursor {
+        color: white;
+        background-color: #04b0ff;
+        font-size: 18px;
+        width: 70%;
+        text-align: center;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        float: left;
+        box-shadow: 2px 2px 3px #aaaaaa;
+    }
+    
+    .arrow {
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 30px 0 30px 30px;
+        border-color: transparent transparent transparent #04b0ff;
+        float: left;
+    }
+    
+    .clear_padding {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    .clear_margin {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    
+    .time_point {
+        position: absolute;
+        left: 33px;
+        top: -20px;
+    }
+    
+    .point {
+        width: 14px;
+        height: 14px;
+        border: 4px solid;
+        border-color: #377bb5;
+        border-radius: 7px;
+        box-shadow: 2px 2px 3px #aaaaaa;
+        float: left;
+    }
+    
+    .point_tip {
+        margin-left: 5px;
+        float: left;
+    }
+    
+    .time_point_line {
+        position: absolute;
+        left: 40px;
+        top: 0px;
+        bottom: -20px;
+        width: 1px;
+        height: 100%;
+        background-color: rgba(136, 136, 136, 0.5);
+    }
+    
+    .trow {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        position: relative;
+        min-height: 50px;
+    }
+    
+    .trow_bolder {
+        position: absolute;
+        left: 0px;
+        top: -30px;
+        bottom: 0px;
+        width: 1px;
+        background-color: rgba(136, 136, 136, 0.4);
+        z-index: 30;
+    }
+    
+    .prow {
+        margin-top: 25px;
+        margin-bottom: 25px;
+        position: static;
+        display: flex;
+        align-items: center;
+    }
+    
+    .prow_empty {
+        position: static;
+        display: flex;
+        align-items: center;
+        height: 50px;
+    }
+    
+    .prow_pointer {
+        width: 18%;
+        float: left;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .prow_content {
+        width: 82%;
+        float: left;
+        background-color: #f2f2f2;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        display: flex;
+        align-items: center;
+        flex-grow: 1;
+        cursor: pointer;
+    }
+    
+    .prow_content_empty {
+        width: 82%;
+        float: left;
+        display: flex;
+        align-items: center;
+        height: 200%;
+    }
+    
+    .prow_content_cur {
+        color: white;
+        background-color: #04b0ff;
+    }
+    
+    .prow_content_sel {
+        border: 2px solid;
+        border-color: #04b0ff;
+    }
+    
+    .cancel_btn {
+        background-color: #f2f2f2;
+        border-color: #d2d2d2;
+        color: #6f6e6e;
+        border-width: 2px;
+    }
+</style>
+<div class="header_box">
+    <div class="form-inline margin_left_right">
+        <div style="width:38%;text-align:left;float:left;">
+            <div class="form-group">
+                <button class="btn btn-success" ng-click="add_patient()">新增检查</button>
+                <button class="btn btn-success" style="display:none;" ng-click="add_kz_order()">快诊补单</button>
+                <input ng-model="patient_name" type="text" class="form-control" placeholder="患者姓名" ng-keypress="search_keydown($event)" />
+                <button class="btn btn-default" ng-click="search_patient()">搜索</button>
+            </div>
+        </div>
+        <div style="width:24%;text-align:center;float:left;">
+            <div class="form-group cur_date">
+                <button class="btn btn-success" ng-click="previous_day()">&lt;</button>&nbsp;&nbsp;{{current_date | dateAndWeek}}&nbsp;&nbsp;<button class="btn btn-success" ng-click="next_day()">&gt;</button>
+            </div>
+        </div>
+        <div style="width:38%;text-align:right;float:left;">
+            <div class="form-group" style="margin:10px 0 10px 0;">
+                <label style="margin-right: 20px;">今日共有({{data_arr.length}})人预约</label>
+                <a href="javascript:void();" ng-click="go_late_page()">查看迟到表</a>
+            </div>
+        </div>
+        <div style="clear:both;">
+        </div>
+    </div>
+</div>
+<div class="content_box">
+    <div class="left_panel">
+        <div class="page_title">
+            <div class="table_header" style="width:18%;float:left;">时间</div>
+            <div class="table_header" style="width:14%;float:left;">检查单</div>
+            <div class="table_header" style="width:14%;float:left;">患者名</div>
+            <div class="table_header" style="width:14%;float:left;">检查项目</div>
+            <div class="table_header" style="width:16%;float:left;">检查部位</div>
+            <div class="table_header" style="width:14%;float:left;">影像号</div>
+            <div class="table_header" style="width:10%;float:left;border-right-width:0;">检查状态</div>
+            <div style="clear:both;"></div>
+        </div>
+        <div class="page_content">
+            <div class=" trow " ng-repeat="t in time_arr " after-render="relocation_time_point()">
+                <a id='{{ t.begin | date:"HHmm" }}'></a>
+                <div class="time_point">
+                    <div class="point "></div>
+                    <div class="point_tip "><a>{{t.begin | date:"HH:mm"}}</a></div>
+                </div>
+                <div class="time_point_line"></div>
+                <div class="trow_bolder" style="left:17.9%;"></div>
+                <div class="trow_bolder" style="left:32%;"></div>
+                <div class="trow_bolder" style="left:46%;"></div>
+                <div class="trow_bolder" style="left:60.05%;"></div>
+                <div class="trow_bolder" style="left:76.05%;"></div>
+                <div class="trow_bolder" style="left:90.05%;"></div>
+                <div class="prow " ng-repeat="data in data_arr | dateInSide:t.begin:t.end | orderBy: 'appointment_at' track by $id(data)">
+                    <a id='{{ data.hospital_no+data.patient_name }}'></a>
+                    <div class="prow_pointer clear_padding ">
+                        <div class="table_content_cursor ">
+                            <div class="cursor " ng-show="current_patient==data">当前排到</div>
+                            <div class="arrow " ng-show="current_patient==data"></div>
+                        </div>
+                    </div>
+                    <div class="prow_content clear_padding " ng-click="change_sel_patient(data) " ng-class="{ 'prow_content_cur':(current_patient==data), 'prow_content_sel':(select_patient==data)} ">
+                        <div class="table_content " style="width:17.1%;float:left;font-size:1.6em;">{{data.hospital_no}}
+                        </div>
+                        <div class="table_content " style="width:17.1%;float:left;font-size:1.6em;">{{data.patient_name}}
+                        </div>
+                        <div class="table_content " style="width:17.1%;float:left;font-size:1.6em;">{{data.project_name}}
+                        </div>
+                        <div class="table_content " style="width:19.5%;float:left; " ng-bind-html="data.body_description | bodyDesc">
+                        </div>
+                        <div class="table_content " style="width:17.1%;float:left;font-size:1.6em;">{{data.film_no}}
+                        </div>
+                        <div class="table_content " style="width:12.1%;float:left;font-size:1.6em;">{{data.state | stateDesc}}
+                        </div>
+                        <div style="clear:both; "></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right_panel ">
+        <div class="patient_info_box ">
+            <div class="row box ">
+                <h3>当前状态：{{select_patient.state | stateDesc}}</h3>
+            </div>
+            <div class="row box ">
+                <div class="col-md-6 col-xs-6 ">
+                    <button class="btn btn-lg btn-success func_button " style="background-color:#5fb85f" ng-disabled="select_patient==null || select_patient.state!=1 " ng-click="call_success(select_patient) ">叫号成功</button>
+                </div>
+                <div class="col-md-6 col-xs-6 ">
+                    <button class="btn btn-lg btn-warning func_button " style="background-color:#eead56" ng-disabled="select_patient==null || select_patient.state==2 || select_patient.state==3 " ng-click="not_coming(select_patient) ">患者未到</button>
+                </div>
+            </div>
+            <div class="row box " style="margin-top:30px; ">
+                <div class="col-md-6 col-xs-6 ">
+                    <button class="btn btn-lg btn-primary func_button " style="background-color:#4da5fa" ng-disabled="select_patient==null || select_patient.state!=2 " ng-click="finish_examine(select_patient) ">检查完成</button>
+                </div>
+                <div class="col-md-6 col-xs-6 ">
+                    <button class="btn btn-lg btn-info func_button " style="background-color:#25d796" ng-disabled="select_patient==null || select_patient.state==0 " ng-click="show_info(select_patient) ">检查详情</button>
+                </div>
+            </div>
+            <div class="row box ">
+                <h5>患者姓名：{{select_patient.patient_name}}</h5>
+                <h5>影像号码：{{select_patient.film_no}}</h5>
+                <h5>检查来源：{{select_patient.order_code?'快诊':'医院' }}</h5>
+                <h5>订单编号：{{select_patient.order_code}}</h5>
+                <h5>预约时间：{{select_patient.appointment_at | date:'yyyy-MM-dd HH:mm'}}</h5>
+                <h5>患者电话：{{select_patient.patient_phone}}</h5>
+                <h5 style="word-break: break-all;line-height: 20px;">医生备注：{{select_patient.diagnose_info}}</h5>
+            </div>
+            <div class="row box " style="margin-bottom:10px; ">
+                <button class="btn btn-lg btn-danger pull-right cancel_btn" ng-disabled="select_patient==null || select_patient.state>2" ng-click="cancel_examine(select_patient)">取消检查</button>
+            </div>
+        </div>
+    </div>
+    <div style="clear:both"></div>
+</div>
+
+<script type="text/ng-template" id="cancel.html">
+    <div class="modal-header">
+        <h3 class="modal-title">填写取消原因</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <textarea class="form-control" rows="3" ng-model="cancel_reason" placeholder="请填写取消检查的原因"></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

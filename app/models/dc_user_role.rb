@@ -1,0 +1,2 @@
+class DcUserRole < ApplicationRecord
+end

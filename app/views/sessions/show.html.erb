@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>影像云管理系统</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+        <style type="text/css">
+      html {
+        height: 100%;
+      }
+      body {
+      background: url('/assets/bg.jpg') no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
+
+      .panel-default {
+      opacity: 0.9;
+      margin-top:30px;
+      width: 300px;
+      }
+      .form-group.last {
+      margin-bottom:20px;
+      }
+      div.panel-body {
+        background-color: rgba(255, 255, 255, 1)
+      }
+      .vcenter {
+        position: absolute;
+        top: calc(50% - 250px);
+          width: 100%;
+      }
+      .error{
+        color: #333333;
+        background-color:#fef7dc;
+        border:1px solid;
+        border-color:#e05c6c;
+        padding-left:10px;
+        font-family: 微软雅黑;
+        font-size: 14px;
+      }
+      .reloadRucaptcha{
+          width: 90px;
+          height: 32px;
+      }
+      .icon{
+        width:20px;
+        height:20px;
+      }
+      .content_body{
+        background-color:rgba(255,255,255,0.5) !important;
+      }
+      .btn_logon{
+        background-color:rgb(91,161,219);
+      }
+      .input_with_icon{
+        padding-left:36px;
+      }
+      .div_icon{
+        background-color:#888888;
+        width:24px;
+        height:24px;
+        display:flex;
+        align-items:center;
+        justify-content: center;
+      }
+      .input_icon{
+        width:20px;
+        height:20px;
+      }
+      .header-title{
+        display:flex;
+        align-items:center;
+        justify-content: center;
+        flex-direction:column;
+        font-family: 微软雅黑;
+        color:#FFFFFF;
+      }
+    </style>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div style="display:flex;align-items:center;justify-content: center;flex-direction:column;">
+                <div class="header-title">
+                  <p style="font-size:36px;margin-bottom:0px;">影像云管理系统</p>
+                  <p style="font-size:12px;">Dicom On Cloud Management System</p>
+                </div>
+                <div class="panel panel-default content_body" style="margin-top: 10px;">
+                    <div class="panel-body content_body">
+                        <%= form_for :sessions, :url => sessions_path, :html => {:id => "form_ajax", :class => 'form-horizontal'}  do |form| %>
+                            <div class="form-group">
+                              <div class="col-sm-12">
+                                <% flash.each do |name, msg| -%>
+                                <div class="<%=name%>">
+                                  <img src="/assets/excalmatory.png" />
+                                  <%=msg%>
+                                </div>
+                                <% end -%>
+                              </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                    <div class="input-group">
+                                      <span class="input-group-addon">
+                                          <img class="input_icon" src="/assets/account.png" />
+                                      </span>
+                                      <input id="login" type="name" placeholder="用户名" class="form-control" required="required" name="sessions[name]">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-12">
+                                  <div class="input-group">
+                                      <span class="input-group-addon">
+                                          <img class="input_icon" src="/assets/security.png" />
+                                      </span>
+                                      <input id="password" placeholder="密码" class="form-control" required="required" type="password" name="sessions[password]">
+                                    </div>
+                                </div>
+                            </div>
+                          <div class="form-group">
+                            <div class="col-sm-12" style="padding: 0">
+                              <div class="col-sm-5">
+                                <%= rucaptcha_input_tag(class: 'form-control', placeholder: '请输入验证码') %>
+                              </div>
+                              <div class="col-sm-7" style="padding-left: 0">
+                                <%= rucaptcha_image_tag(class: 'reloadRucaptcha', alt: '验证码') %>
+                                <img id="img_refreshcode" class="icon" style="float:right;cursor:pointer;margin-top: 6px;margin-right: 4px" src="/assets/refresh.png" />
+                              </div>
+                            </div>
+
+                          </div>
+                            <div class="form-group last">
+                                <div class="col-sm-12">
+                                    <%= form.submit '登录', id: 'btn_login', class: 'btn btn-primary btn-sm btn-block btn_logon' %>
+                                </div>
+                            </div>
+                        <% end %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+      $(document).ready(function(){
+        $("#forgot_password").click(function(){
+          var username = $("#login").val().trim();
+          var url = "/forgotpassword";
+          if(username!=""){
+            url += ("?login="+username);
+          }
+          window.location.href = url;
+        });
+        $("#btn_login").click(function(){
+          var s_login = $("#login").val().trim();
+          var s_password = $("#password").val().trim();
+          var c_error_div = $("#error_div");
+          if(s_login == ""){
+            c_error_div.html("用户名不能为空");
+            return false;
+          }
+          else if(s_password == ""){
+            c_error_div.html("密码不能为空");
+            return false;
+          }
+          return true;
+        });
+        function reload_rucaptcha(){
+          var currentSrc = $('.reloadRucaptcha').attr('src');
+          $('.reloadRucaptcha').attr('src', currentSrc.split('?')[0] + '?' + (new Date()).getTime());
+          return false;
+        }
+
+          $('.reloadRucaptcha').click(function(){
+              var currentSrc = $(this).attr('src');
+              $(this).attr('src', currentSrc.split('?')[0] + '?' + (new Date()).getTime());
+              return false;
+          });
+          $('#img_refreshcode').click(function(){
+              reload_rucaptcha();
+          });
+      });
+    </script>
+  </body>
+</html>

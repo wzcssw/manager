@@ -1,0 +1,103 @@
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+    
+    .modal_input {
+        margin-bottom: 7px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="table-operation">
+        <h3>医院管理</h3>
+        <div style="height:50px;float:left">
+            <button style="float: right;width: 5%;display:none" ng-click="get_page_data()" class="btn btn-default">搜索</button>
+            <input ng-model="cur_data.keyword" style="width: 13%;float: right;margin-left: 5px;margin-right: 5px;display:none" type="text" class="form-control" placeholder="医院名称" ng-keypress="search_keydown($event)" />
+            <select style="width: 6%;float: right;display:none" ng-model="cur_data.is_open" ng-change="reload_page()" class="form-control">
+          <option value="">全部状态</option>
+          <option value="1">开</option>
+          <option value="0">关</option>
+        </select>
+            <select style="width: 6%;float: right;margin-right: 5px;display:none" ng-model="cur_data.city_id" ng-change="reload_page()" class="form-control">
+          <option value="">全部城市</option>
+          <option ng-repeat="c in city_arr" value="{{c.id}}" >
+            {{c.name}}
+          </option>
+        </select>
+            <button type="button" style="margin-bottom: 5px;" class="btn btn-primary" ng-click="add_or_edit_hospital()">添加医院</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover" style="margin-top:20px;">
+        <tbody>
+            <tr style="background-color:#f6f6f6;">
+                <th>医院名称</th>
+                <th>所在城市</th>
+                <th>营业状态</th>
+                <th>操作</th>
+            </tr>
+            <tr ng-repeat="row in data_row.row_arr">
+                <td>
+                    {{row.name}}
+                </td>
+                <td>
+                    {{row.city_name}}
+                </td>
+                <td>
+                    <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'blue'}">{{row.in_open ? '开启': '关闭'}}</a>
+                </td>
+                <td>
+                    <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_hospital(row)">编辑</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="page_bar" style="float: right">
+        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="page_changed()" class="pagination-sm" boundary-links="true"
+            force-ellipses="true"></uib-pagination>
+    </div>
+</div>
+
+<script type="text/ng-template" id="hospitalForm.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">医院名称</label>
+                <div class="col-sm-10">
+                    <input id="name" type="text" class="form-control" ng-model="data.name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-2 control-label">唯一编码</label>
+                <div class="col-sm-10">
+                    <input id="hospital_code" name="hospital_code" ng-model="data.hospital_code" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-2 control-label">所在城市</label>
+                <div class="col-sm-10">
+                    <select id="city_id" name="city_id" ng-init="data.city = get_default_city()" ng-model="data.city" ng-change="change_sel()" ng-options="c.name for c in data.city_arr track by c.id" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group" ng-show="title=='编辑医院'">
+                <label class="col-sm-2 control-label">上班时间</label>
+                <div class="col-sm-10">
+                    <div id="open_time" show-spinners="false" uib-timepicker ng-model="data.open_time" ng-change="changed()" hour-step="1" minute-step="15" show-meridian="false"></div>
+                </div>
+            </div>
+            <div class="form-group" ng-show="title=='编辑医院'">
+                <label class="col-sm-2 control-label">下班时间</label>
+                <div class="col-sm-10">
+                    <div id="close_time" show-spinners="false" uib-timepicker ng-model="data.close_time" ng-change="changed()" hour-step="1" minute-step="15" show-meridian="false"></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

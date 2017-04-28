@@ -1,0 +1,26 @@
+<style>
+    input{
+        height: 30px;
+        color: #999999;
+    }
+    select option{
+        color: #999999;
+    }
+    .app-modal-window .modal-dialog {
+      width: 28%;
+    }
+</style>
+<div class="admin_order_left">
+
+</div>
+
+
+
+<script>
+    var date = new  Date();
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var day = date.getDate();
+    var date_string = year+'-'+month+'-'+day;
+    $('.datepickers').datetimepicker({language: 'zh-CN',format: 'yyyy-mm-dd',autoclose: true,minView: 2, startDate:date_string});
+</script>

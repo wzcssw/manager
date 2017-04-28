@@ -1,0 +1,37 @@
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+    
+    .modal_input {
+        margin-bottom: 7px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="table-operation">
+        <h3>角色管理</h3>
+        <div style="height:30px;">
+            <button type="button" style="float: left;" class="btn btn-primary">添加角色</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover" style="margin-top:20px;">
+        <tbody>
+            <tr style="background-color:#f6f6f6;">
+                <th>角色</th>
+                <th>说明</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="row in data_row.row_arr">
+                <td>
+                    <a ng-click="add_or_edit_hospital(row)">
+          {{row.name}}
+        </a>
+                </td>
+                <td>
+                    {{row.description}}
+                </td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

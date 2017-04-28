@@ -1,0 +1,124 @@
+<div class="modal-header">
+    <h4>申请会诊</h4>
+</div>
+<div class="modal-body">
+    <div class="form-horizontal">
+        <div class="form-group">
+            <label for="name" class="col-sm-2 control-label">会议名称</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="name" ng-model="data.name" placeholder="会议名称" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="comment" class="col-sm-2 control-label">会议议题</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="comment" row="4" ng-model="data.comment" placeholder="会议议题"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="req_start_at" class="col-sm-2 control-label">会议申请日期</label>
+            <div class="col-sm-4">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="req_start_at" role="button" data-toggle="dropdown" data-target="#" ng-disabled="action == 'set_expert'">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-disabled="action == 'set_expert'" value="{{data.req_start_at | date:'yyyy-MM-dd'}}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" ng-show="action == 'req_meeting'">
+                        <datetimepicker data-ng-model="data.req_start_at" data-datetimepicker-config="{ dropdownSelector: '#req_start_at',startView:'day',minView:'day' }" />
+                    </ul>
+                </div>
+            </div>
+            <label for="req_end_at" class="col-sm-2 control-label">至</label>
+            <div class="col-sm-4">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="req_end_at" role="button" data-toggle="dropdown" data-target="#" ng-disabled="action == 'set_expert'">
+                        <div class="input-group">
+                            <input type="text" class="form-control" ng-disabled="action == 'set_expert'" value="{{data.req_end_at | date:'yyyy-MM-dd'}}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel" ng-show="action == 'req_meeting'">
+                        <datetimepicker data-ng-model="data.req_end_at" data-datetimepicker-config="{ dropdownSelector: '#req_end_at',startView:'day',minView:'day' }" />
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="selected_patient" class="col-sm-2 control-label">选择病人</label>
+            <div class="col-sm-10">
+                <input class="form-control" id="selected_patient" value="{{data.patient_info | patientDesc}}" disabled="disabled" placeholder="选择的病人" />
+            </div>
+        </div>
+        <div class="form-group" ng-if="action == 'set_expert'">
+            <label for="res_start_at" class="col-sm-2 control-label">确认会议日期</label>
+            <div class="col-sm-4">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="res_start_at" role="button" data-toggle="dropdown" data-target="#">
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="{{data.res_start_at | date:'yyyy-MM-dd hh:mm'}}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="data.res_start_at" data-datetimepicker-config="{ dropdownSelector: '#res_start_at',startView:'day',minView:'minute' }" />
+                    </ul>
+                </div>
+            </div>
+            <label for="res_end_at" class="col-sm-2 control-label">至</label>
+            <div class="col-sm-4">
+                <div class="dropdown">
+                    <a class="dropdown-toggle" id="res_end_at" role="button" data-toggle="dropdown" data-target="#">
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="{{data.res_end_at | date:'yyyy-MM-dd hh:mm'}}">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <datetimepicker data-ng-model="data.res_end_at" data-datetimepicker-config="{ dropdownSelector: '#res_end_at',startView:'day',minView:'minute' }" />
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-if="action == 'set_expert'">
+            <label for="selected_expert" class="col-sm-2 control-label">选择专家</label>
+            <div class="col-sm-10">
+                <select class="form-control" id="selected_expert" ng-options="e.name for e in expert_arr" ng-model="data.expert" ng-change="select_expert()" placeholder="选择专家">
+                </select>
+            </div>
+        </div>
+        <div class="form-group" ng-if="action == 'req_meeting'">
+            <label for="search_patient" class="col-sm-2 control-label">搜索病人</label>
+            <div class="form-inline col-sm-10" id="search_patient">
+                <input type="text" placeholder="患者姓名" class="form-control" ng-model="query.patient_name" />
+                <button class="btn btn-primary" ng-click="search()">搜索</button>
+            </div>
+        </div>
+    </div>
+    <div class="form-horizontal">
+        <div class="form-group" ng-if="action == 'req_meeting'">
+            <div style="overflow-y:scroll;margin-left:23px;width:95%;height:400px;">
+                <table class="table table-bordered table-hover">
+                    <tr ng-repeat="pi in patient_arr">
+                        <td>{{pi.patient_name}}</td>
+                        <td width="65">{{pi.patient_phone}}</td>
+                        <td>{{pi.project_name}}({{pi.body_description}})</td>
+                        <td>{{pi.diagnose_info}}</td>
+                        <td width="20">
+                            <input type="radio" name="select_patient" value="{{pi.patient_info_id}}" ng-click="select_patient(pi)" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <hr style="margin: 0px 0 5px 0" />
+        </div>
+    </div>
+    <div class="row" style="color:red; margin: 0 0 9px 9px;">{{error_msg}}</div>
+    <div style="text-align:center;">
+        <div style="display: inline-block;width: 280px;height:35px;margin: 0 atuo;">
+            <button style="float:left;width:120px;" class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+            <button style="float:right;width:120px;" class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</div>

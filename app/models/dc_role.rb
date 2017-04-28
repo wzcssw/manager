@@ -1,0 +1,2 @@
+class DcRole < ApplicationRecord
+end

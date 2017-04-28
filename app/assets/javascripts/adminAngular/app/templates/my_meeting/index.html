@@ -1,0 +1,174 @@
+<style>
+    a {
+        cursor: pointer;
+    }
+    
+    th {
+        text-align: center;
+    }
+    
+    td {
+        vertical-align: middle !important;
+    }
+    
+    .content_box {
+        position: relative;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(242, 242, 242)
+    }
+    
+    .north_box {
+        height: 52px;
+    }
+    
+    .center_box {
+        position: absolute;
+        top: 72px;
+        left: 10px;
+        right: 10px;
+        bottom: 0;
+    }
+    
+    .table-head {
+        height: 38px;
+    }
+    
+    .table-body::-webkit-scrollbar {
+        background: transparent;
+        width: 1px;
+    }
+    
+    .table-body {
+        position: absolute;
+        top: 38px;
+        left: 0;
+        right: 0;
+        bottom: 70px;
+        overflow-y: auto;
+        background-color: white;
+    }
+    
+    .table-body:hover::-webkit-scrollbar {
+        background: lightyellow;
+    }
+    
+    .table-body:hover::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+    }
+    
+    .table-body:hover::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+    }
+</style>
+<div class="content_box">
+    <div class="north_box">
+        <div class="form-inline">
+            <div class="form-group" style="margin: 20px 0 20px 0;">
+                <button class="btn btn-primary" ng-click="new_meeting()" ng-show="is_req_role()">申请新会诊</button>
+                <label for="state" class="control-label">会议状态:</label>
+                <select class="form-control" id="state" ng-model="cur_data.state" ng-options="state.text for state in state_arr">
+                </select>
+                <label for="patient_name" class="control-label">患者姓名:</label>
+                <input ng-model="cur_data.patient_name" id="patient_name" type="text" class="form-control" placeholder="患者姓名" ng-keypress="search_keydown($event)" />
+                <button class="btn btn-primary" ng-click="search_patient()">搜索</button>
+            </div>
+        </div>
+    </div>
+    <div class="center_box">
+        <div style="width: 100%;height: 100%; position: relative;">
+            <div class="table-head">
+                <table class="table table-bordered" style="text-align: center;font-family: 'Microsoft YaHei' ! important;">
+                    <colgroup>
+                        <col style="width: 50px;" />
+                        <col style="width: 180px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col />
+                        <col ng-if="is_present_role()" style="width: 130px;" />
+                        <col ng-if="!is_res_role()" style="width: 120px;" />
+                        <col ng-if="!is_res_role()" style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 200px;" />
+                    </colgroup>
+                    <tr style="font-size: 16px;font-weight: 700">
+                        <th>序号</th>
+                        <th>会议名称</th>
+                        <th>患者姓名</th>
+                        <th>检查项目</th>
+                        <th>检查部位</th>
+                        <th ng-if="is_present_role()">检查医院</th>
+                        <th ng-if="!is_res_role()">申请开始时间</th>
+                        <th ng-if="!is_res_role()">申请结束时间</th>
+                        <th>确认开始时间</th>
+                        <th>确认结束时间</th>
+                        <th>申请专家</th>
+                        <th>审核状态</th>
+                        <th>操作</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="table-body">
+                <table class="table table-bordered" style="text-align: center;font-family: 'Microsoft YaHei' ! important;">
+                    <colgroup>
+                        <col style="width: 50px;" />
+                        <col style="width: 180px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col />
+                        <col ng-if="is_present_role()" style="width: 130px;" />
+                        <col ng-if="!is_res_role()" style="width: 120px;" />
+                        <col ng-if="!is_res_role()" style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 120px;" />
+                        <col style="width: 200px;" />
+                    </colgroup>
+                    <tr ng-repeat="m in data_row.row_arr track by $id(m)">
+                        <td>{{m.id}}</td>
+                        <td>{{m.name}}</td>
+                        <td>{{m.patient_name}}</td>
+                        <td>{{m.project_name}}</td>
+                        <td>
+                            <div ng-bind-html="m.project_bodies | bodyDesc"></div>
+                        </td>
+                        <td ng-if="is_present_role()">{{m.hospital_name}}</td>
+                        <td ng-if="!is_res_role()">{{m.req_start_at | date:"yyyy-MM-dd"}}</td>
+                        <td ng-if="!is_res_role()">{{m.req_end_at | date:"yyyy-MM-dd"}}</td>
+                        <td>{{m.res_start_at | date:"yyyy-MM-dd hh:mm"}}</td>
+                        <td>{{m.res_end_at | date:"yyyy-MM-dd hh:mm"}}</td>
+                        <td>{{m.res_user_name}}</td>
+                        <td>
+                            {{m.state | meetingStateDesc}}
+                        </td>
+                        <td>
+                            <button style="padding: 8px 14px;margin-right:1%" class="btn btn-success" ng-show="btn_show('go_appointment',m)" ng-click="edit_meeting(m)">预约专家</a>
+                            <button style="padding: 8px 14px;margin-right:1%" class="btn btn-primary" ng-show="btn_show('go_open_meeting',m)" ng-click="open_meeting(m)">开会</a>
+                            <button style="padding: 8px 14px;margin-right:1%" class="btn btn-warning" ng-show="btn_show('go_join_meeting',m)" ng-click="join_meeting(m)">加入会议</a>
+                            <button style="padding: 8px 14px;margin-right:1%" class="btn btn-danger" ng-show="btn_show('go_finish_meeting',m)" ng-click="finish_meeting(m)">结束会议</a>
+                        </td>
+                    </tr>
+                    <tr ng-show="data_row.row_arr.length == 0">
+                        <td colspan=8>(无相关数据)</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="position: absolute;bottom:0;left: 15px;right: 15px;">
+                <uib-pagination style="float: right;margin-left: 20px;" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页" ng-change="page_change()" items-per-page="page_size" total-items="data_row.row_count" ng-model="data_row.current_page" max-size="maxSize"
+                    class="pagination-sm" boundary-links="true" rotate="false"></uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="editMeeting.html">
+    <edit_meeting></edit_meeting>
+</script>

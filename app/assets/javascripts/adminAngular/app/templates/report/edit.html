@@ -1,0 +1,409 @@
+<style>
+    body {
+        font-family: 'Microsoft YaHei' ! important;
+    }
+    
+    .panel-default {
+        border-color: #FFF;
+    }
+    
+    .panel-body {
+        padding: 25px 15px 15px 15px;
+        background-color: #f2f2f2;
+    }
+    
+    .panel {
+        background-color: #f2f2f2;
+        border: 0px solid transparent;
+    }
+    
+    a {
+        cursor: pointer;
+    }
+    
+    .page_title {
+        height: 40px;
+        width: 100%;
+    }
+    
+    .header_box {
+        width: 100%;
+        background-color: rgb(242, 242, 242);
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+    
+    .content_box {
+        width: 100%;
+        position: absolute;
+        top: 130px;
+        bottom: 75px;
+        padding-top: 10px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .bottom_box {
+        width: 100%;
+        position: absolute;
+        bottom: 0px;
+    }
+    
+    .box {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    
+    .prow_content {
+        width: 100%;
+        float: left;
+        background-color: rgb(242, 242, 242);
+        border-radius: 8px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .tree_header {
+        width: 100%;
+        background-color: rgb(242, 242, 242);
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .clear_padding {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+    
+    .btn-last {
+        margin: 20px;
+    }
+    
+    label {
+        font-size: 15px;
+    }
+    
+    textarea {
+        width: 100%;
+    }
+    
+    td {
+        width: 12%;
+    }
+    
+    .td-title {
+        width: 7%;
+        font-size: 15px;
+        font-weight: 900;
+    }
+    
+    .td-title1 {
+        width: 0.5%;
+        font-size: 15px;
+        font-weight: 900;
+    }
+    
+    .td-var {
+        width: 17%;
+    }
+    
+    table {
+        float: left;
+        margin-left: 1%;
+        border-collapse: separate;
+        border-spacing: 0px 10px;
+        width: 100%;
+    }
+    
+    .tech-checkbox {
+        width: 60px;
+        height: 24px;
+        border: solid 1px;
+        text-align: center;
+        cursor: pointer;
+    }
+    
+    .selected_div {
+        background-color: #33D1FF;
+    }
+    
+    .btn-grey {
+        background-color: #B0AEAE;
+    }
+    
+    .glyphicon {
+        color: #A8A8A8;
+        top: 2px;
+        display: inline-block;
+        font-family: 'Glyphicons Halflings';
+        font-style: normal;
+        font-weight: normal;
+        line-height: 1;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+    
+    .glyphicon:hover {
+        color: #737373;
+    }
+    
+    .tech_block {
+        border: solid 1px;
+        background-color: white;
+        color: #333333;
+        float: left;
+        margin: 0 0 5px 15px;
+        height: 22px;
+        padding-left: 5px;
+        padding-right: 18px;
+        position: relative;
+        /*width: 100px;*/
+    }
+    
+    .print {
+        background-color: #4da5fa;
+        border-color: #4da5fa;
+    }
+    
+    .back {
+        background-color: #0fb0ff;
+        border-color: #0fb0ff;
+    }
+    
+    .black {
+        color: #1a0000;
+    }
+    
+    .container-fluid {
+        margin-right: auto;
+        margin-left: auto;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    
+    .wierd-color {
+        color: #333333;
+    }
+    
+    .edit_symptom {
+        cursor: pointer;
+    }
+    
+    .btn_str {
+        font-family: 'Microsoft YaHei' ! important;
+        margin-right: 15px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="page_title" style="text-align: center;">
+        <h3 class="wierd-color">{{report.project_name}}诊断报告</h3>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-xs-8" id="main_panel">
+            <div class="prow_content clear_padding" style="margin-bottom: 10px;">
+                <table style="float:left;margin-left:1%;border-collapse:separate; border-spacing:0px 10px;width: 100%;">
+                    <tr>
+                        <td class="td-title">检查单号</td>
+                        <td class="td-var">{{patient_info.hospital_no}}</td>
+                        <td class="td-title">患者姓名</td>
+                        <td class="td-var">{{report.patient_name}}</td>
+                        <td class="td-title">患者性别</td>
+                        <td class="td-var">{{report.patient_sex == 0 ? '女' : (report.patient_sex == 1 ? '男' : '未知')}}</td>
+                        <td class="td-title">患者年龄</td>
+                        <td class="td-var">{{report.patient_age}}</td>
+                    </tr>
+                    <tr>
+                      <td class="td-title">影像号</td>
+                      <td class="td-var">{{patient_info.film_no}}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear:both;"></div>
+            <div class="prow_content clear_padding" style="margin-bottom: 10px;">
+                <table>
+                    <tr>
+                        <td class="td-title1">检查时间</td>
+                        <td class="td-var" style="width: 6.5%">{{report.examine_at | date:'yyyy年MM月dd日'}}</td>
+                        <td class="td-title" style="width: 2.3%">检查项目</td>
+                        <td class="td-var" style="width: 6.5%">{{report.project_name}}</td>
+                        <td class="td-title1" style="width: 2.3%">检查部位</td>
+                        <td class="td-var" style="min-width:150px;vertical-align: text-top;">
+                            <div style="width: 92%">{{report.project_bodies}}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="td-title" style="float: left;width: 75px;">检查技术</td>
+                        <td colspan="9">
+                            <div style="align-items:center;">
+                                <div class="col-md-1" style="padding-left: 0px;width: 7%">
+                                    <button type="button" style="font-family: 'Microsoft YaHei' ! important;" class="btn btn-success btn-sm" ng-click="open_check_technique_modal()">添加</button>
+                                </div>
+                                <div id="tech_div" class="col-md-11" style="padding-left: 0px;display:flex;display: -webkit-flex;align-items:center;-webkit-flex-wrap: wrap;flex-wrap: wrap;">
+                                    <div class='tech_block' ng-repeat="t in tech_arr track by $index">
+                                        <div>
+                                            {{t}}
+                                        </div>
+                                        <a class='clear' ng-click='remove_tech($index)' style='position: absolute;right:0px;top:0px;'>
+                                            <span class='glyphicon glyphicon-remove '></span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear:both;"></div>
+            <div class="prow_content clear_padding">
+                <table style="width:98%">
+                    <tr>
+                        <td style="vertical-align:text-top;width: 8%">
+                            <label>影像表现</label>
+                        </td>
+                        <td style="width:85%">
+                            <textarea type="text" class="form-control" ng-model="report.expression" placeholder="影像表现" cols="80" rows="12"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:text-top;width: 8%">
+                            <label>影像诊断</label>
+                        </td>
+                        <td style="width:85%;">
+                            <textarea type="text" class="form-control" ng-model="report.diagnose" placeholder="影像诊断" cols="80" rows="6"></textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="clear:both;"></div>
+            <div class="prow_content clear_padding" style="background-color: white">
+                <div class="form-inline" style="width:18%;float:left;margin-left:1%">
+                    <div class="form-group">
+                        <label>报告医生</label>
+                        <span style="margin-left: 10px;">{{(current_user.report_doctor==null || current_user.report_doctor=='') ?'[未设置]':current_user.report_doctor}}</span>
+                    </div>
+                </div>
+                <div class="form-inline" style="width:28%;float:left;color: #A8A8A8">
+                    <div class="form-group">
+                        <label>报告日期</label>
+                        <span style="margin-left: 10px;">{{report.report_at | date:'yyyy年MM月dd日'}}</span>
+                    </div>
+                </div>
+            </div>
+            <div style="clear:both;"></div>
+        </div>
+        <div class="col-md-4 col-xs-4">
+            <div class="tree_header">
+                <div style="width: 100%;">
+                    <div style="width: 30%; float: left; height: 40px;">
+                        <h4>诊断模板</h4>
+                    </div>
+                    <div style="width: 70%; float: left; height: 40px;text-align: right;display: flex;align-items: center;justify-content: flex-end;">
+                        <button class="btn btn-danger btn-sm" style="margin-right: 5px;" ng-show="is_symptom_edit" ng-click="add_symptom('leve1',$event,null)">
+                                新增部位
+                            </button>
+                        <button class="btn btn-primary btn-sm" ng-click="change_mode(!is_symptom_edit,$event)">
+                                {{is_symptom_edit? '只读模式':'编辑模式'}}
+                            </button>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <div class="panel panel-default" id='model_temp'>
+                <div class="panel-body" style="overflow-y:auto;height:653px;padding-top: 15px;">
+                    <div ui-tree="treeOptions" data-drag-enabled="is_symptom_edit" data-drag-delay="500">
+                        <ol ui-tree-nodes="" ng-model="dataForTheTree" id="tree-root">
+                            <li ng-repeat="node in dataForTheTree" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row " style="text-align: center;padding-bottom: 30px">
+    <div class="form-inline ">
+        <div class="form-group ">
+            <button id="save_to_symptom_btn" ng-show="is_full_report()" class="btn btn_danger" ng-click="save_to_symptom()">存储为模板</button>
+            <button id="save_btn" ng-show="can_btn_show('save')" class="btn btn_str" ng-class="{true:'btn-success',false:'btn-grey'}[window.is_report_changed == true]" ng-click="save()">保存</button>
+        </div>
+        <div class="form-group">
+            <button class="btn btn_str btn-primary" ng-disabled="!can_btn_show('go_check')" ng-show="current_role.code == 'read_doctor'" ng-click="change_report_state('checking')">提交审核</button>
+            <button class="btn btn_str btn-grey" disabled ng-show="can_btn_show('in_checking')">审核中</button>
+            <button class="btn btn_str btn-primary" ng-show="can_btn_show('go_pass')" ng-click="change_report_state('pass')">通过</button>
+            <button class="btn btn_str btn-primary" ng-show="can_btn_show('go_unpass')" ng-click="change_report_state('unpass')">不通过</button>
+        </div>
+        <div class="form-group ">
+            <button class="btn btn_str btn-primary print" ng-disabled="!can_btn_show('go_print')" ng-click="print(patient_info.id)">打印</button>
+        </div>
+        <div class="form-group ">
+            <button class="btn btn-primary back " style="font-family: 'Microsoft YaHei' ! important;" ng-click="go_back()">返回</button>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template " id="check_technique.html ">
+    <div class="modal-header " style="text-align: center ">
+        <h4>检查技术</h4>
+    </div>
+    <div class="modal-body " style="height: 240px; ">
+        <table>
+            <tr ng-repeat="cts in cts_arr ">
+                <td class="td-title " style="width:2%;vertical-align:middle ">
+                    <span ng-style="cts.name=='序列名称'?{'margin':'0 auto','position':'relative','top': '-17px'}:{}">{{cts.name}}</span>
+                </td>
+                <td>
+                    <div ng-repeat="ctsc in cts.children " style="float:left;margin:5px; ">
+                        <div class="tech-checkbox " ng-class="{ 'selected_div':is_select(ctsc)} " ng-click="add_selected(ctsc) ">
+                            {{ctsc}}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer ">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template " id="edit_symptom.html ">
+    <edit_symptom></edit_symptom>
+</script>
+
+<script type="text/ng-template" id="nodes_renderer.html">
+    <div ui-tree-handle>
+        <a ng-if="node.children && node.children.length > 0" data-nodrag ng-click="node.is_expand = !node.is_expand"><span
+        class="glyphicon"
+        ng-class="{
+          'glyphicon-chevron-right': !node.is_expand,
+          'glyphicon-chevron-down': node.is_expand
+        }"></span></a>
+        <span class="glyphicon" ng-class="{'glyphicon-book':node.is_symptom,'glyphicon-folder-open':!node.is_symptom}"></span>
+        <a data-nodrag ng-click="edit_symptom(node)">{{node.name}}</a>
+        <span data-nodrag ng-show="is_symptom_edit && !node.is_symptom && (node.parent_id == null || node.parent_id == '')" class="edit_symptom glyphicon glyphicon-plus" style="margin-left: 10px;" ng-click="add_symptom('level2',$event,node)"></span>
+        <span data-nodrag ng-show="is_symptom_edit && !node.is_symptom && node.parent_id != null && node.parent_id != ''" class="edit_symptom glyphicon glyphicon-plus" style="margin-left: 10px;" ng-click="add_symptom('level3',$event,node)"></span>
+        <span data-nodrag ng-show="is_symptom_edit" class="edit_symptom glyphicon glyphicon-minus" style="margin-left: 10px;" ng-click="del_symptom(node)"></span>
+        <a class="pull-right btn btn-primary btn-xs" ng-show="node.is_symptom" data-nodrag ng-click="append_symptom(node,$event)" style="margin-right: 8px;">追加</a>
+    </div>
+    <ol ui-tree-nodes="" ng-model="node.children" ng-class="{hidden: !node.is_expand}">
+        <li ng-repeat="node in node.children" ui-tree-node ng-include="'nodes_renderer.html'">
+        </li>
+    </ol>
+</script>
+
+<script type="text/ng-template " id="select_parent.html ">
+    <select_parent></select_parent>
+</script>
+
+<script>
+    window.onbeforeunload = function(e) {
+        if (window.is_report_changed == true)
+            return '';
+    }
+</script>
