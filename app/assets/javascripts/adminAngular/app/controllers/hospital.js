@@ -1,119 +1,36 @@
-// 医院管理
-controllers.controller('hospitalCtrl', ['$scope', '$timeout', 'get_params', 'hospitalHttp', '$uibModal', function($scope, $timeout, get_params, hospitalHttp, $uibModal) {
+controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', function($scope, hospitalHttp,  $uibModal) {
+    $scope.maxSize = 5;
     $scope.city_arr = [];
-    $scope.cur_data = {
-        city_id: "",
-        keyword: "",
-        is_open: ""
-    };
     $scope.data_row = {
         current_page: 1,
         row_arr: [],
         all_page: 0,
-        row_count: 0,
+        total_count: 0,
+        total_pages: 1,
         page_size: 12
     };
-    $scope.default_data = function() {
-        $scope.cur_data.city_id = "";
-        $scope.cur_data.keyword = "";
-        $scope.cur_data.is_open = "";
-    }
     $scope.init_data = function() {
-        // 获得界面初始化数据
         hospitalHttp.get_init_data(function(data) {
             if (!data.success) {
                 return;
             }
             $scope.city_arr = data.city_arr;
-            $scope.default_data();
         });
     }
     $scope.get_page_data = function() {
         hospitalHttp.get_page_data({
-            city_id: $scope.cur_data.city_id,
-            is_open: $scope.cur_data.is_open,
-            keyword: $scope.cur_data.keyword,
             page: $scope.data_row.current_page,
             page_size: $scope.data_row.page_size
         }, function(result) {
             if (!result.success) {
                 return;
             }
-            // $scope.data_row = result.page_result;
-            $scope.data_row.current_page = result.current_page;
             $scope.data_row.row_arr = result.row_arr;
-            $scope.data_row.all_page = result.all_page;
+            $scope.data_row.current_page = result.current_page;
             $scope.data_row.row_count = result.row_count;
-            // $scope.data_row.page_size = result.page_size;
         });
     }
-    $scope.search_keydown = function($event) {
-        if ($event.keyCode === 13) {
-            $scope.reload_page();
-        }
-    }
-    $scope.page_changed = function() {
-        console.log('Page changed to: ' + $scope.data_row.current_page);
-        $scope.get_page_data();
-    };
-    $scope.reload_page = function() {
-        $scope.data_row.current_page = 1;
-        console.log('Page changed to: ' + $scope.data_row.current_page);
-        $scope.get_page_data();
-    };
-    // 添加医院
-    $scope.add_or_edit_hospital = function(row) {
-            var params = {
-                id: "",
-                name: "",
-                hospital_code: "",
-                city_id: "",
-                open_time: "",
-                close_time: ""
-            };
-            if (row) {
-                params.id = row.id;
-                params.name = row.name;
-                params.city_id = row.city_id;
-                params.hospital_code = row.hospital_code;
-                params.open_time = row.open_time;
-                params.close_time = row.close_time;
-            }
-            params.city_arr = $scope.city_arr;
-            var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: 'hospitalForm.html',
-                controller: 'hospitalFormCtrl',
-                size: '',
-                resolve: {
-                    params: params
-                }
-            });
-            modalInstance.result.then(function(params) {
-                $scope.save_hospital(params);
-            }, function() {
-                console.log('Modal dismissed at: ' + new Date());
-            });
-        }
-        // 保存医院
-    $scope.save_hospital = function(params) {
-            hospitalHttp.save(params, function(result) {
-                if (result.success) {
-                    $(".confirm").hide();
-                    swal({
-                        title: "保存成功",
-                        type: "success",
-                    });
-                    setTimeout(function() {
-                        $(".confirm").click();
-                    }, 1700);
-                } else {
-                    return;
-                }
-                $scope.reload_page();
-            });
-        }
-        // 修改医院状态
+    // 修改医院状态
     $scope.change_state = function(row) {
         warn_confirm({
             title: "修改医院状态",
@@ -126,16 +43,68 @@ controllers.controller('hospitalCtrl', ['$scope', '$timeout', 'get_params', 'hos
                     if (!result.success) {
                         return;
                     }
-                    $scope.reload_page();
+                    $scope.get_page_data();
                 });
             }
+        });
+    }
+    // 保存医院
+    $scope.save_hospital = function(params) {
+        hospitalHttp.save(params, function(result) {
+            if (result.success) {
+                $(".confirm").hide();
+                swal({
+                    title: "保存成功",
+                    type: "success",
+                });
+                setTimeout(function() {
+                    $(".confirm").click();
+                }, 1700);
+            } else {
+                return;
+            }
+            $scope.get_page_data();
+        });
+    }
+     // 添加和编辑医院
+    $scope.add_or_edit_hospital = function(row) {
+        var params = {
+            id: "",
+            name: "",
+            hospital_code: "",
+            city_id: "",
+            open_time: "",
+            close_time: ""
+        };
+        if(row){
+            params.id = row.id;
+            params.name = row.name;
+            params.city_id = row.city_id;
+            params.hospital_code = row.hospital_code;
+            params.open_time = row.open_time;
+            params.close_time = row.close_time;
+        }
+        params.city_arr = $scope.city_arr;
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'hospitalForm.html',
+            controller: 'hospitalFormCtrl',
+            size: '',
+            resolve: {
+                params: params
+            }
+        });
+        modalInstance.result.then(function(params) {
+            $scope.save_hospital(params);
+        }, function() {
+            console.log('Modal dismissed at: ' + new Date());
         });
     }
     $scope.init_data();
     $scope.get_page_data();
 }]);
 
-// 添加医院
+// 添加编辑医院
 controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "params", function($scope, $uibModalInstance, params) {
     var open_t = null;
     var close_t = null;
@@ -193,8 +162,6 @@ controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "para
         if ($scope.data.close_time != null) {
             close_time_str = ("0" + $scope.data.close_time.getHours()).slice(-2) + ":" + ("0" + $scope.data.close_time.getMinutes()).slice(-2);
         }
-        console.log(open_time_str);
-        console.log(close_time_str);
         $uibModalInstance.close({
             id: $scope.data.id,
             name: $scope.data.name,

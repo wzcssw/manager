@@ -1,6 +1,5 @@
-
-// 角色管理
-controllers.controller('roleCtrl', ['$scope','$timeout', 'get_params','roleHttp', function($scope, $timeout,get_params,roleHttp){
+// 阅片中心
+controllers.controller('diagnoseCentersCtrl', ['$scope','$timeout', 'get_params','roleHttp', function($scope, $timeout,get_params,roleHttp){
   $scope.data_row = {
     current_page:1,
     row_arr:[],

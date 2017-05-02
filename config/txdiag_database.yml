@@ -1,0 +1,35 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: 5
+  username: root
+  password: 123456
+  host: localhost
+  port: 3306
+  socket: /tmp/mysql.sock
+
+development:
+  <<: *default
+  database: txdiag_pro
+
+test:
+  <<: *default
+  database: txdiag_test
+
+staging:
+  <<: *default
+  database: txdiag_pro
+  pool: 25
+  username: root
+  password: n[h^nM06
+  host: 112.126.64.124
+  port: 3306
+
+production:
+  <<: *default
+  database: txdiag_production
+  pool: 25
+  username: pro_txdb
+  password: 'Tongxin2014'
+  host: rdsarjziaiq3e2a.mysql.rds.aliyuncs.com
+  port: 3306

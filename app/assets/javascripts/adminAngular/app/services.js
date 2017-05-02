@@ -18,70 +18,42 @@ services.factory("handleHttpError", function() {
     }
 });
 
-// paramsObj {url: '/', params:{a:1, b:1}, successDo:function(handleResult), errorDo:(handleResult), alwaysDo:(isError, handleResult)}
-services.factory('httpBase', ['$http', 'handleHttpError', function($http, handleHttpError) {
-    return {
-        request: function(paramsObj) {
-            var requestObj = {};
-            if (paramsObj.escape) {
-                requestObj = {
-                    method: paramsObj.method,
-                    url: paramsObj.url
-                };
-            } else {
-                requestObj = {
-                    method: paramsObj.method,
-                    url: '/api/admin/v1' + paramsObj.url
-                };
-            }
-            if (paramsObj.method == "GET") {
+services.factory('httpBase', ['$http', 'handleHttpError', function($http, handleHttpError){
+    return{
+        request: function(paramsObj){
+            var requestObj = {method: paramsObj.method, url: "api/admin/v1"+paramsObj.url};
+            if (paramsObj.method == "GET"){
                 requestObj.params = paramsObj.params;
-            } else {
+            }else {
                 requestObj.data = paramsObj.params;
             }
 
-            $http(requestObj).success(function(result, status, headers, config) {
-                var handleResult = {
-                    result: result,
-                    status: status,
-                    headers: headers,
-                    config: config,
-                    paramsObj: paramsObj
-                };
+            $http(requestObj).success(function(result,status,headers,config){
+                var handleResult = {result: result,status: status,headers: headers,config:config, paramsObj:paramsObj};
                 var isErr = true;
-                if (handleHttpError.deal_app_error(handleResult)) {
+                if(handleHttpError.deal_app_error(handleResult)){
                     isErr = false;
-                    paramsObj["successDo"] && paramsObj["successDo"](handleResult["result"], handleResult);
+                    paramsObj["successDo"] && paramsObj["successDo"](handleResult["result"],handleResult);
                 }
                 paramsObj["alwaysDo"] && paramsObj["alwaysDo"](isErr, handleResult);
-            }).error(function(result, status, headers, config) {
-                var handleResult = {
-                    result: result,
-                    status: status,
-                    headers: headers,
-                    config: config,
-                    paramsObj: paramsObj
-                };
+            }).error(function(result,status,headers,config){
+                var handleResult = {result: result,status: status,headers: headers,config:config, paramsObj:paramsObj};
                 handleHttpError.deal_network_error(handleResult);
                 paramsObj["alwaysDo"] && paramsObj["alwaysDo"](handleResult, true);
             })
         },
 
-        get: function(paramsObj) {
+        get: function(paramsObj){
             paramsObj.method = "GET";
             this.request(paramsObj);
         },
 
-        post: function(paramsObj) {
+        post: function(paramsObj){
             paramsObj.method = "POST";
             this.request(paramsObj);
         },
-        put: function(paramsObj) {
+        put: function(paramsObj){
             paramsObj.method = "PUT";
-            this.request(paramsObj);
-        },
-        delete: function(paramsObj) {
-            paramsObj.method = "DELETE";
             this.request(paramsObj);
         }
     }
@@ -98,22 +70,3 @@ services.factory('get_params', function() {
         }
     }
 });
-
-// proxyHttp
-services.factory('proxyHttp', ['httpBase', function(httpBase) {
-    return {
-        send: function(p, successDo, errorDo, alwaysDo) {
-            httpBase.post({
-                url: '/common/proxy_req',
-                params: {
-                    method: p.method,
-                    url: p.url,
-                    param: p.param
-                },
-                successDo: successDo,
-                errorDo: errorDo,
-                alwaysDo: alwaysDo
-            });
-        }
-    }
-}]);

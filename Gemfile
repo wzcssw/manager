@@ -18,6 +18,8 @@ gem 'rucaptcha'
 gem 'grape'
 gem 'grape-entity'
 
+gem 'kaminari'
+
 gem 'sprockets-rails'
 gem 'sprockets'
 gem 'bootstrap-sass'

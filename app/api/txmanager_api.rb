@@ -9,8 +9,9 @@ class TxmanagerAPI < Grape::API
 
   namespace :admin do
     namespace :v1 do
-      mount Admin::V1::CommonAPI
+      mount Admin::V1::HospitalAPI
       mount Admin::V1::PatientInfoAPI
+      mount Admin::V1::CommonAPI
     end
   end
 

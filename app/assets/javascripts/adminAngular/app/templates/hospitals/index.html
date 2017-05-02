@@ -10,49 +10,31 @@
 <div class="container-fluid">
     <div class="table-operation">
         <h3>医院管理</h3>
-        <div style="height:50px;float:left">
-            <button style="float: right;width: 5%;display:none" ng-click="get_page_data()" class="btn btn-default">搜索</button>
-            <input ng-model="cur_data.keyword" style="width: 13%;float: right;margin-left: 5px;margin-right: 5px;display:none" type="text" class="form-control" placeholder="医院名称" ng-keypress="search_keydown($event)" />
-            <select style="width: 6%;float: right;display:none" ng-model="cur_data.is_open" ng-change="reload_page()" class="form-control">
-          <option value="">全部状态</option>
-          <option value="1">开</option>
-          <option value="0">关</option>
-        </select>
-            <select style="width: 6%;float: right;margin-right: 5px;display:none" ng-model="cur_data.city_id" ng-change="reload_page()" class="form-control">
-          <option value="">全部城市</option>
-          <option ng-repeat="c in city_arr" value="{{c.id}}" >
-            {{c.name}}
-          </option>
-        </select>
+        <div style="height:30px;">
             <button type="button" style="margin-bottom: 5px;" class="btn btn-primary" ng-click="add_or_edit_hospital()">添加医院</button>
         </div>
     </div>
     <table class="table table-bordered table-hover" style="margin-top:20px;">
-        <tbody>
-            <tr style="background-color:#f6f6f6;">
-                <th>医院名称</th>
-                <th>所在城市</th>
-                <th>营业状态</th>
-                <th>操作</th>
-            </tr>
-            <tr ng-repeat="row in data_row.row_arr">
-                <td>
-                    {{row.name}}
-                </td>
-                <td>
-                    {{row.city_name}}
-                </td>
-                <td>
-                    <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'blue'}">{{row.in_open ? '开启': '关闭'}}</a>
-                </td>
-                <td>
-                    <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_hospital(row)">编辑</a>
-                </td>
-            </tr>
+        <tr style="background-color:#f6f6f6;">
+            <th>医院名称</th>
+            <th>所在城市</th>
+            <th>营业状态</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="row in data_row.row_arr">
+            <td>{{row.name}}</td>
+            <td>{{row.city_name}}</td>
+            <td>
+                <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'blue'}">{{row.in_open ? '开启': '关闭'}}</a>
+            </td>
+            <td>
+                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_hospital(row)">编辑</a>
+            </td>
+        </tr>
         </tbody>
     </table>
-    <div class="page_bar" style="float: right">
-        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="page_changed()" class="pagination-sm" boundary-links="true"
+    <div class='pagination' style="margin-top: 50px;float: right">
+        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"
             force-ellipses="true"></uib-pagination>
     </div>
 </div>

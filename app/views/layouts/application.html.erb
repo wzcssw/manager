@@ -9,8 +9,8 @@
   <%= csrf_meta_tags %>
   <link rel="shortcut icon" type="image/x-icon" media="screen" href="assets/tongxin_sm.png">
   <script type="text/javascript">
-    var home_page = "user";
-    var menu_arr = [{name:'医院',url:'#/user'},{name:'阅片中心',url:'#/role'}]
+    var home_page = "hospitals";
+    var menu_arr = [{name:'医院',url:'#/hospitals'},{name:'阅片中心',url:'#/diagnose_centers'}]
   </script>
   <style type="text/css" >
   html {
@@ -131,7 +131,7 @@
   <script type="text/javascript">
     app.controller('adminController', ['$scope','$stateParams', '$location','$state',function($scope,$stateParams,$location,$state) {
       $scope.menu_arr = window.menu_arr;
-      $scope.cur_menu = null;
+      $scope.cur_menu = $scope.menu_arr[0];
       $scope.open_menu = function(menu){
         window.location.href = menu.url;
         $scope.cur_menu = menu;
