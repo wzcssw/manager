@@ -1,0 +1,25 @@
+<style>
+    .doctor-wrapper{
+        padding:15px 0 0 5px;
+        background-color:#eef1f5;
+    }
+    .reset{
+        margin-right:4px;
+    }
+    .btn:focus,
+    .btn:active:focus,
+    .btn.active:focus,
+    .btn.focus,
+    .btn:active.focus,
+    .btn.active.focus {
+        outline: none;
+    }
+</style>
+<div class="doctor-wrapper">
+    <ul class="nav nav-tabs" role="tablist">
+        <li ng-click="go_tab($index)" ng-repeat="tab in tabarr" ng-class="{'active':is_current_tab($index)}"><a style="cursor: pointer">{{tab.name}}</a></li>
+    </ul>
+</div>
+<div class="content-wrapper">
+    <div ui-view></div>
+</div>

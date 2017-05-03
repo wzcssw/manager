@@ -54,5 +54,43 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       present :success, true
     end
 
+    desc "阅片中心用户"
+    params do
+      # requires :id, type: String
+    end
+    get :dc_users do
+      @user = DcUser.page(params[:page]).per(params[:page_size])
+
+      present :success, true
+      present :row_arr, @user,with: DcUserEntity
+      present :current_page, @user.current_page
+      present :all_page, @user.total_pages
+      present :row_count, @user.total_count
+      present :page_size,@user.size
+    end
+
+    desc "保存阅片中心人员"
+    params do
+      # requires :name, type: String
+    end
+    post :save_manager do
+      @user = nil
+      if params[:id].present?
+        @user = DcUser.find(params[:id])
+      else
+        @user = DcUser.new
+      end
+      @user.diagnose_center_id = params[:diagnose_center_id]
+      @user.email = params[:email]
+      @user.phone = params[:phone]
+      @user.realname = params[:realname]
+      @user.username = params[:username]
+      @user.password = params[:password] if params[:password].present?
+      @user.rank = params[:rank] if params[:rank].present?
+      result = @user.save
+      DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create if result.present?
+      present :success, result.present?
+    end
+
   end
 end

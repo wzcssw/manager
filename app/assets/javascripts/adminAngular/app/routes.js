@@ -11,6 +11,21 @@ routes.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
             templateUrl: '/assets/adminAngular/app/templates/diagnose_centers/index.html',
             controller: 'diagnoseCentersCtrl'
         })
+        .state('manager', {
+            url: '/manager',
+            templateUrl: '/assets/adminAngular/app/templates/manager.html',
+            controller: 'managerCtrl'
+        })
+        .state('manager.diagnose_centers_manager', {
+            url: '/diagnose_centers_manager',
+            templateUrl: '/assets/adminAngular/app/templates/diagnose_centers/manager.html',
+            controller: 'diagnoseCentersManagerCtrl'
+        })
+        .state('manager.hospitals_manager', {
+            url: '/hospitals_manager',
+            templateUrl: '/assets/adminAngular/app/templates/hospitals/manager.html',
+            controller: 'hospitalsManagerCtrl'
+        })
     $urlRouterProvider.otherwise(home_page);
 }]);
 

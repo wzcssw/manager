@@ -30,7 +30,7 @@ controllers.controller('diagnoseCentersCtrl', ['$scope','$timeout', 'get_params'
           $scope.data_row.row_count = result.row_count;
       });
   }
-  // 添加和编辑医院
+  // 添加和编辑
   $scope.add_or_edit_diagnose_center = function(row) {
       var modalInstance = $uibModal.open({
           animation: true,

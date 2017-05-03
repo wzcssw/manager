@@ -1,0 +1,118 @@
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+    .header-right{
+        float: right;
+        margin: 25px 0 20px 0;
+    }
+    .line{
+        display: inline-block;
+        width: 32%;
+    }
+    .app-modal-window .modal-dialog {
+        width: 35%;
+    }
+</style>
+<div class="container-fluid">
+    <div style="float: left;margin: 25px 0 18px 0">
+        <label>所属阅片中心：</label>
+        <select ng-model="team_made" ng-change="state_change()" ng-options="l as l.name for l in team_mades" class="form-control  input-sm" style="width: 130px; display: inline-block">
+            <option value="">全部</option>
+        </select>
+        <span style="width: 30px; display: inline-block"></span>
+        <label>姓名：</label>
+        <input type="text" ng-keypress="search_keydown($event)" class="form-control line"  ng-model="search_hospital" placeholder="医院">
+    </div>
+    <div class="header-right">
+        <button type="button" class="btn btn-primary" ng-click="add_or_edit_dc_user()">添加中心人员</button>
+        <button type="button" class="btn btn-primary" ng-click="add_or_edit_diagnose_center()">角色</button>
+    </div>
+    <table class="table table-bordered table-hover" style="margin-top:20px;">
+        <tr style="background-color:#f6f6f6;">
+            <th>账号</th>
+            <th>角色</th>
+            <th>真实姓名</th>
+            <th>电话号码</th>
+            <th>邮箱</th>
+            <th>所属诊断中心</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="row in data_row.row_arr">
+            <td>{{row.username || "--"}}</td>
+            <td>{{show_dc_roles(row)}}</td>
+            <td>{{row.realname || "--"}}</td>
+            <td>{{row.phone || "--"}}</td>
+            <td>{{row.email || "--"}}</td>
+            <td>{{row.diagnose_center.name || "--"}}</td>
+            <td>
+                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_dc_user(row)">编辑</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class='pagination' style="margin-top: 50px;float: right">
+        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"
+            force-ellipses="true"></uib-pagination>
+    </div>
+</div>
+
+<!-- 新增或编辑阅片中心人员 -->
+<script type="text/ng-template" id="diagnose_center_manager_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}阅片中心人员{{data.diagnose_center.id}}</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="username" class="col-sm-3 control-label">账号</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="data.username" placeholder="账号"/>
+                </div>
+            </div>
+            <div class="form-group" ng-if=" title == '添加' ">
+                <label for="city_id" class="col-sm-3 control-label">密码</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.password" class="form-control" placeholder="密码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">真实姓名</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.realname" class="form-control" placeholder="真实姓名"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">所属诊断中心</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="data.diagnose_center" ng-options="d as d.name for d in diagnose_centers">
+                        <option value="">请选择阅片中心</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">角色</label>
+                <div class="col-sm-9">
+                    <select class="form-control" ng-model="data.dc_roles" ng-options="r as r.name for r in roles">
+                        <option value="">请选择角色</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">电话号码</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.phone" class="form-control" placeholder="电话号码"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">邮箱</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.email" class="form-control" placeholder="邮箱"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
