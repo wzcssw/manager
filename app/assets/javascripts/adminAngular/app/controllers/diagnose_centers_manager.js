@@ -38,6 +38,24 @@ controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenter
             console.log('Modal dismissed at: ' + new Date());
         });
     }
+    // 添加或编辑角色
+    $scope.add_or_edit_dc_role = function(row){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'dc_role_form.html',
+            controller: 'dcRoleFormCtrl',
+            size: 'lg',
+            // windowClass: 'app-modal-window',
+            resolve: {
+                params: row
+            }
+        });
+        modalInstance.result.then(function(params) {
+            // $scope.save_dc_user(params);
+        }, function() {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    }
     // 保存阅片中心人员
     $scope.save_dc_user = function(params){
         diagnoseCenterManagersHttp.save(params, function(result) {
@@ -91,7 +109,6 @@ controllers.controller('addOrEditDiagnoseCentersManagerCtrl', ["$scope", "$uibMo
         $scope.roles = result.row_arr;
     });
     $scope.ok = function() {
-        console.log($scope.data);
         if ($scope.data.username == undefined || $scope.data.username == null || $scope.data.username.trim() == "") {
             alert("账号不能为空");
             return;
@@ -123,6 +140,72 @@ controllers.controller('addOrEditDiagnoseCentersManagerCtrl', ["$scope", "$uibMo
             return;
         }
         $uibModalInstance.close($scope.data);
+    };
+    $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+}]);
+
+// 角色
+controllers.controller('dcRoleFormCtrl', ["$scope", "$uibModalInstance", "params","diagnoseCenterManagersHttp",'$uibModal', function($scope, $uibModalInstance, params,diagnoseCenterManagersHttp,$uibModal) {
+    $scope.data = params;
+    $scope.roles = [];
+    $scope.get_page_data = function(){
+        diagnoseCenterManagersHttp.get_roles({ page: 1, page_size: 9999 }, function(result) { // 载入角色
+            if (!result.success)
+                return;
+            $scope.roles = result.row_arr;
+        });
+    }
+    $scope.add_or_edit_role = function(row){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'add_or_edit_role_form.html',
+            controller: 'addOrEditRoleCtrl',
+            windowClass: 'app-modal-window-sm',
+            resolve: {
+                params: row
+            }
+        });
+        modalInstance.result.then(function(params) {
+            $scope.save_role(params);
+        }, function() {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+    $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+    // 保存角色
+    $scope.save_role = function(params){
+        diagnoseCenterManagersHttp.save_role(params, function(result) {
+          if(result.success) {
+            $(".confirm").hide();
+            swal({
+                title: "保存成功",
+                type: "success",
+            });
+            setTimeout(function() {
+                $(".confirm").click();
+            }, 1700);
+          } else {
+              return;
+          }
+          $scope.get_page_data();
+        });
+    }
+    $scope.get_page_data();
+}]);
+
+// 编辑角色form
+controllers.controller('addOrEditRoleCtrl', ["$scope", "$uibModalInstance", "params","diagnoseCenterManagersHttp", function($scope, $uibModalInstance, params,diagnoseCenterManagersHttp) {
+    params == undefined ? $scope.title = '添加' : $scope.title = '编辑';
+    $scope.role = {};
+    if(params != undefined){
+        $scope.role = params;
+    }
+    $scope.ok = function() {
+        $uibModalInstance.close($scope.role);
     };
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');

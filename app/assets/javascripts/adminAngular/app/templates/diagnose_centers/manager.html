@@ -13,6 +13,9 @@
     .app-modal-window .modal-dialog {
         width: 35%;
     }
+    .app-modal-window-sm .modal-dialog {
+        width: 25%;
+    }
 </style>
 <div class="container-fluid">
     <div style="float: left;margin: 25px 0 18px 0">
@@ -26,7 +29,7 @@
     </div>
     <div class="header-right">
         <button type="button" class="btn btn-primary" ng-click="add_or_edit_dc_user()">添加中心人员</button>
-        <button type="button" class="btn btn-primary" ng-click="add_or_edit_diagnose_center()">角色</button>
+        <button type="button" class="btn btn-primary" ng-click="add_or_edit_dc_role()">角色</button>
     </div>
     <table class="table table-bordered table-hover" style="margin-top:20px;">
         <tr style="background-color:#f6f6f6;">
@@ -49,7 +52,9 @@
                 <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_dc_user(row)">编辑</a>
             </td>
         </tr>
-        </tbody>
+        <tr ng-if="data_row.row_arr.length==0">
+            <td colspan=7 style="text-align:center">(暂无数据)</td>
+        </tr>
     </table>
     <div class='pagination' style="margin-top: 50px;float: right">
         <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"
@@ -57,10 +62,76 @@
     </div>
 </div>
 
+<!-- 新增或编辑角色 -->
+<script type="text/ng-template" id="dc_role_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">角色</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-hover">
+            <tr style="background-color:#f6f6f6;">
+                <th>名称</th>
+                <th>描述</th>
+                <th>唯一编码</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="row in roles">
+                <td>{{row.name || "--"}}</td>
+                <td>{{row.description || "--"}}</td>
+                <td>{{row.code || "--"}}</td>
+                <td>
+                    <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_role(row)">编辑</a>
+                </td>
+            </tr>
+            <tr ng-if="roles.length==0">
+                <td colspan=4 style="text-align:center">(暂无数据)</td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="add_or_edit_role()">新增</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+
+<!-- 新增或编辑角色form -->
+<script type="text/ng-template" id="add_or_edit_role_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}角色</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">名称</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="role.name" placeholder="名称"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">描述</label>
+                <div class="col-sm-9">
+                    <input ng-model="role.description" class="form-control" placeholder="描述"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">唯一编码</label>
+                <div class="col-sm-9">
+                    <input ng-model="role.code" class="form-control" placeholder="唯一编码"/>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
 <!-- 新增或编辑阅片中心人员 -->
 <script type="text/ng-template" id="diagnose_center_manager_form.html">
     <div class="modal-header">
-        <h4 class="modal-title">{{title}}阅片中心人员{{data.diagnose_center.id}}</h4>
+        <h4 class="modal-title">{{title}}阅片中心人员</h4>
     </div>
     <div class="modal-body">
         <form class="form-horizontal" role="form">

@@ -49,7 +49,6 @@
                 <a class="btn btn-default btn-xs color_box" ng-click="set_binding_hospital(row)">设置绑定医院</a>
             </td>
         </tr>
-        </tbody>
     </table>
     <div class='pagination' style="margin-top: 50px;float: right">
         <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"

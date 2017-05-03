@@ -17,19 +17,6 @@ class Admin::V1::UserAPI < Grape::API
         present :success,true
     end
 
-    desc "角色列表"
-    params do
-    end
-    get :get_roles do
-        @roles = DcRole.page(params[:page]).per(params[:page_size])
-
-        present :current_page, @roles.current_page
-        present :row_arr, @roles
-        present :all_page, @roles.total_pages
-        present :row_count, @roles.total_count
-        present :page_size,@roles.size
-        present :success,true
-    end
 
   end
 end

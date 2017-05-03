@@ -92,5 +92,38 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       present :success, result.present?
     end
 
+    desc "角色列表"
+    params do
+    end
+    get :get_roles do
+        @roles = DcRole.page(params[:page]).per(params[:page_size])
+
+        present :current_page, @roles.current_page
+        present :row_arr, @roles
+        present :all_page, @roles.total_pages
+        present :row_count, @roles.total_count
+        present :page_size,@roles.size
+        present :success,true
+    end
+
+    desc "保存角色"
+    params do
+      # requires :name, type: String
+    end
+    post :save_role do
+      @role = nil
+      if params[:id].present?
+        @role = DcRole.find(params[:id])
+      else
+        @role = DcRole.new
+      end
+      @role.name = params[:name]
+      @role.description = params[:description]
+      @role.code = params[:code]
+      @role.rank = params[:rank] if params[:rank].present?
+      result = @role.save
+      present :success, result.present?
+    end
+
   end
 end
