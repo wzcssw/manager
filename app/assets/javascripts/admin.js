@@ -37,7 +37,6 @@
 //= require film/dicomParser
 //= require film/film
 
-//= require cable
 
 //= require sweet-alert.min
 //= require pinyin_dict_firstletter

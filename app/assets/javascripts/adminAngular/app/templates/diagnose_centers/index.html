@@ -6,32 +6,98 @@
     .modal_input {
         margin-bottom: 7px;
     }
+
+    .wb_label {
+        position: relative;
+        min-width: 160px;
+        height: 40px;
+        float: left;
+        border: 1px solid #DAD8D8;
+        margin-right: 15px;
+        margin-bottom: 10px;
+        padding: 8px;
+    }
+
+    .app-modal-window .modal-dialog {
+        width: 25%;
+    }
 </style>
 <div class="container-fluid">
     <div class="table-operation">
-        <h3>角色管理</h3>
+        <h3>阅片中心管理</h3>
         <div style="height:30px;">
-            <button type="button" style="float: left;" class="btn btn-primary">添加角色</button>
+            <button type="button" style="margin-bottom: 5px;" class="btn btn-primary" ng-click="add_or_edit_diagnose_center()">添加阅片中心</button>
         </div>
     </div>
     <table class="table table-bordered table-hover" style="margin-top:20px;">
-        <tbody>
-            <tr style="background-color:#f6f6f6;">
-                <th>角色</th>
-                <th>说明</th>
-                <th></th>
-            </tr>
-            <tr ng-repeat="row in data_row.row_arr">
-                <td>
-                    <a ng-click="add_or_edit_hospital(row)">
-          {{row.name}}
-        </a>
-                </td>
-                <td>
-                    {{row.description}}
-                </td>
-                <td></td>
-            </tr>
+        <tr style="background-color:#f6f6f6;">
+            <th>名称</th>
+            <th>绑定医院</th>
+            <th>营业状态</th>
+            <th>描述</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="row in data_row.row_arr">
+            <td>{{row.name}}</td>
+            <td>{{show_hospitals(row.hospitals)}}</td>
+            <td>
+                <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'blue'}">{{row.is_open ? '开启': '关闭'}}</a>
+            </td>
+            <td>{{row.description}}</td>
+            <td>
+                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_diagnose_center(row)">编辑</a>
+                <a class="btn btn-default btn-xs color_box" ng-click="set_binding_hospital(row)">设置绑定医院</a>
+            </td>
+        </tr>
         </tbody>
     </table>
+    <div class='pagination' style="margin-top: 50px;float: right">
+        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"
+            force-ellipses="true"></uib-pagination>
+    </div>
 </div>
+
+<script type="text/ng-template" id="diagnose_center_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" ng-model="data.name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-2 control-label">描述</label>
+                <div class="col-sm-10">
+                    <input ng-model="data.description" class="form-control" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="binding_hospital_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{data.name}}</h4>
+    </div>
+    <div class="input-group " style="width:95%;margin:5% 5% 2% 3%">
+      <span class="input-group-addon" id="basic-addon3">绑定医院</span>
+      <input type="text" class="form-control" ng-model="show_result" aria-describedby="basic-addon3">
+    </div>
+    <div class="modal-body" style="height:200px;">
+        <div ng-repeat="row in hospitals" class="wb_label" ng-style="isSelected(row)?{'background-color':'#dfebff','border-color':'#FFCC'}:{}" ng-click="hospital_selected(row)">
+            <span>{{row.name}}</span>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

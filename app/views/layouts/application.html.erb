@@ -136,18 +136,11 @@
         window.location.href = menu.url;
         $scope.cur_menu = menu;
       }
-      var now_href = $location.url();
-      var tmp_menu = $scope.menu_arr.find(function(menu){
-        if(("#"+now_href).indexOf(menu.head_url) == 0){
-          return true;
-        }
+      angular.forEach($scope.menu_arr, function(v, k){
+         if(v.url===('#'+$location.path())){
+           $scope.cur_menu = v;
+         }
       });
-      if(now_href == ""){
-        tmp_menu = $scope.menu_arr[0];
-      }
-      if(tmp_menu){
-        $scope.cur_menu = tmp_menu;
-      }
     }]);
   </script>
 </body>

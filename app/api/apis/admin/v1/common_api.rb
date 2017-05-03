@@ -1,5 +1,3 @@
-
-
 class Admin::V1::CommonAPI < Grape::API
   resources :common do
 

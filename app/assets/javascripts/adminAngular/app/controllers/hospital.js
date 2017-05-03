@@ -66,7 +66,7 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
             $scope.get_page_data();
         });
     }
-     // 添加和编辑医院
+    // 添加和编辑医院
     $scope.add_or_edit_hospital = function(row) {
         var params = {
             id: "",
