@@ -14,8 +14,20 @@ test:
   <<: *default
   database: txmanager_test
 
+staging:
+  <<: *default
+  database: txhims_staging
+  pool: 25
+  username: root
+  password: n[h^nM06
+  host: 112.126.64.124
+  port: 3306
+
 production:
   <<: *default
-  database: txmanager_production
-  username: txmanager
-  password: <%= ENV['TXMANAGER_DATABASE_PASSWORD'] %>
+  database: txhims_production
+  pool: 25
+  username: pro_txdb
+  password: 'Tongxin2014'
+  host: rdsarjziaiq3e2a.mysql.rds.aliyuncs.com
+  port: 3306

@@ -12,7 +12,7 @@ class SessionsController < ApplicationController
             redirect_to "/sessions"
             return
         end
-        if @user.authenticate(password).present?
+        if @user.present? && @user.authenticate(password).present?
             unless @user.is_admin?
                 flash[:error] = "非管理员用户"
                 redirect_to "/sessions"
