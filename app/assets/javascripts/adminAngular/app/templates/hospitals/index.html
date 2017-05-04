@@ -11,7 +11,7 @@
     <div class="table-operation">
         <h3>医院管理</h3>
         <div style="height:30px;">
-            <button type="button" style="margin-bottom: 5px;" class="btn btn-primary" ng-click="add_or_edit_hospital()">添加医院</button>
+            <button type="button" style="margin-bottom: 5px;" class="btn btn-primary btn-sm" ng-click="add_or_edit_hospital()">添加医院</button>
         </div>
     </div>
     <table class="table table-bordered table-hover" style="margin-top:20px;">
@@ -25,7 +25,7 @@
             <td>{{row.name}}</td>
             <td>{{row.city_name}}</td>
             <td>
-                <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'blue'}">{{row.in_open ? '开启': '关闭'}}</a>
+                <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'grey'}">{{row.in_open ? '开启': '关闭'}}</a>
             </td>
             <td>
                 <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_hospital(row)">编辑</a>
