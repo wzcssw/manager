@@ -60,6 +60,8 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
     end
     get :dc_users do
       @user = DcUser.page(params[:page]).per(params[:page_size])
+      @user = @user.where("realname like '%#{params[:search_realname]}%'") if params[:search_realname].present?
+      @user = @user.where(diagnose_center_id: params[:search_diagnose_center]) if params[:search_diagnose_center].present?
 
       present :success, true
       present :row_arr, @user,with: DcUserEntity

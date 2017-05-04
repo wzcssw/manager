@@ -118,7 +118,6 @@ controllers.controller('diagnoseCentersCtrl', ['$scope','$timeout', 'get_params'
   $scope.get_page_data();
 }]);
 
-
 // 添加编辑医院
 controllers.controller('diagnoseCenterCtrl', ["$scope", "$uibModalInstance", "params", function($scope, $uibModalInstance, params) {
     $scope.data = params;

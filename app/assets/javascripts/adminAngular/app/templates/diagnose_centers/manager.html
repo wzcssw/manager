@@ -20,12 +20,12 @@
 <div class="container-fluid">
     <div style="float: left;margin: 25px 0 18px 0">
         <label>所属阅片中心：</label>
-        <select ng-model="team_made" ng-change="state_change()" ng-options="l as l.name for l in team_mades" class="form-control  input-sm" style="width: 130px; display: inline-block">
+        <select ng-model="search_diagnose_center" ng-change="get_page_data()" ng-options="dc as dc.name for dc in diagnose_centers" class="form-control  input-sm" style="width: 130px; display: inline-block">
             <option value="">全部</option>
         </select>
         <span style="width: 30px; display: inline-block"></span>
         <label>姓名：</label>
-        <input type="text" ng-keypress="search_keydown($event)" class="form-control line"  ng-model="search_hospital" placeholder="医院">
+        <input type="text" ng-keypress="search_keydown($event)" class="form-control line"  ng-model="search_realname" placeholder="姓名">
     </div>
     <div class="header-right">
         <button type="button" class="btn btn-primary" ng-click="add_or_edit_dc_user()">添加中心人员</button>
@@ -38,7 +38,7 @@
             <th>真实姓名</th>
             <th>电话号码</th>
             <th>邮箱</th>
-            <th>所属诊断中心</th>
+            <th>所属阅片中心</th>
             <th></th>
         </tr>
         <tr ng-repeat="row in data_row.row_arr">
@@ -141,7 +141,7 @@
                     <input type="text" class="form-control" ng-model="data.username" placeholder="账号"/>
                 </div>
             </div>
-            <div class="form-group" ng-if=" title == '添加' ">
+            <div class="form-group">
                 <label for="city_id" class="col-sm-3 control-label">密码</label>
                 <div class="col-sm-9">
                     <input ng-model="data.password" class="form-control" placeholder="密码"/>
@@ -154,7 +154,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="city_id" class="col-sm-3 control-label">所属诊断中心</label>
+                <label for="city_id" class="col-sm-3 control-label">所属阅片中心</label>
                 <div class="col-sm-9">
                     <select class="form-control" ng-model="data.diagnose_center" ng-options="d as d.name for d in diagnose_centers">
                         <option value="">请选择阅片中心</option>

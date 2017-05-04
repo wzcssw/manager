@@ -1,6 +1,9 @@
-controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenterManagersHttp', '$uibModal', function($scope, diagnoseCenterManagersHttp,  $uibModal) {
+controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenterManagersHttp','diagnoseCentersHttp', '$uibModal', function($scope, diagnoseCenterManagersHttp,  diagnoseCentersHttp,$uibModal) {
     $scope.maxSize = 5;
     $scope.city_arr = [];
+    $scope.diagnose_centers = [];
+    $scope.search_diagnose_center = "";
+    $scope.search_realname = "";
     $scope.data_row = {
         current_page:1,
         row_arr:[],
@@ -9,9 +12,14 @@ controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenter
         page_size:12
     };
     $scope.get_page_data = function() {
+        if($scope.search_diagnose_center == null){
+            $scope.search_diagnose_center = "";
+        }
         diagnoseCenterManagersHttp.get_page_data({
             page: $scope.data_row.current_page,
-            page_size: $scope.data_row.page_size
+            page_size: $scope.data_row.page_size,
+            search_diagnose_center: $scope.search_diagnose_center.id,
+            search_realname: $scope.search_realname
         }, function(result) {
             if (!result.success) {
                 return;
@@ -19,6 +27,13 @@ controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenter
             $scope.data_row.row_arr = result.row_arr;
             $scope.data_row.current_page = result.current_page;
             $scope.data_row.row_count = result.row_count;
+        });
+    }
+    $scope.init = function () {
+        diagnoseCentersHttp.get_page_data({ page: 1, page_size: 9999 }, function(result) { // 载入所属阅片中心
+            if (!result.success)
+                return;
+            $scope.diagnose_centers = result.row_arr;
         });
     }
     // 添加或编辑阅片中心人员
@@ -86,6 +101,13 @@ controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenter
             return arr.join("，");
         }
     }
+    // enter
+    $scope.search_keydown = function($event) {
+        if ($event.keyCode === 13) {
+            $scope.get_page_data();
+        }
+    };
+    $scope.init();
     $scope.get_page_data();
 }]);
 
