@@ -2,7 +2,7 @@ class DcCusReportTemplate < ApplicationRecord
     belongs_to :dc_user
     # 从公共报告模板初始化私有报告模板
     def self.init_data_from_public(d_user_id)
-        DcCusReportTemplate.delete_all(dc_user_id: d_user_id)
+        DcCusReportTemplate.where(dc_user_id: d_user_id).delete_all
         rt_arr = ReportTemplate.order("id")
         rt_arr.each do |rt|
             DcCusReportTemplate.create({
