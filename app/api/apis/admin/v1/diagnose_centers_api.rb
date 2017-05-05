@@ -90,6 +90,8 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       @user.password = params[:password] if params[:password].present?
       @user.rank = params[:rank] if params[:rank].present?
       result = @user.save
+      # 初始化报告模板
+      DcCusReportTemplate.init_data_from_public(@user.id)
       DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create if result.present?
       present :success, result.present?
     end
