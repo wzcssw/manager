@@ -32,6 +32,7 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
     }
     // 修改医院状态
     $scope.change_state = function(row) {
+        $(".confirm").show();
         warn_confirm({
             title: "修改医院状态",
             text: "确定修改医院状态吗？",

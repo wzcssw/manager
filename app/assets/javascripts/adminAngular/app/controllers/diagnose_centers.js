@@ -67,6 +67,7 @@ controllers.controller('diagnoseCentersCtrl', ['$scope','$timeout', 'get_params'
   }
   // 修改医院状态
   $scope.change_state = function(row) {
+      $(".confirm").show();
       warn_confirm({
           title: "修改阅片中心状态",
           text: "确定修改阅片中心状态吗？",
