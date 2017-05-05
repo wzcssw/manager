@@ -63,6 +63,7 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
     // 修改用户状态
     $scope.change_state = function(row) {
         var tmp_str = (row.is_delete ? '启用' : '禁用');
+        $(".confirm").show();
         warn_confirm({
             title: tmp_str,
             text: "确定" + tmp_str + "该用户吗？",
