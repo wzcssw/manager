@@ -14,7 +14,10 @@ gem 'jbuilder', '~> 2.5'
 gem 'puma', '~> 3.0'
 
 gem 'dalli'
+# Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+# 验证
+gem 'clearance', '~> 1.16.0'
 gem 'rucaptcha'
 
 gem 'grape'
