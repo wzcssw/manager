@@ -101,6 +101,41 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
             console.log('Modal dismissed at: ' + new Date());
         });
     }
+    // 编辑 brand
+    $scope.edit_brand = function(row){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'editBrand.html',
+            controller: 'editBrandCtrl',
+            size: 'md',
+            resolve: {
+                params: row
+            }
+        });
+        modalInstance.result.then(function(params) {
+            $scope.save_brand(params);
+        }, function() {
+            console.log('Modal dismissed at: ' + new Date());
+        });
+    };
+    // 保存brand
+    $scope.save_brand = function(params) {
+        hospitalHttp.save_brand(params, function(result) {
+            if (result.success) {
+                $(".confirm").hide();
+                swal({
+                    title: "保存成功",
+                    type: "success",
+                });
+                setTimeout(function() {
+                    $(".confirm").click();
+                }, 1700);
+            } else {
+                return;
+            }
+            $scope.get_page_data();
+        });
+    };
     $scope.init_data();
     $scope.get_page_data();
 }]);
@@ -175,5 +210,21 @@ controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "para
     };
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
+    };
+}]);
+
+// 添加编辑医院品牌
+controllers.controller('editBrandCtrl', ["$scope", "$uibModalInstance", "params", function($scope, $uibModalInstance, params) {
+    $scope.data = {};
+    if(params!=undefined){
+        $scope.data = params.brand;
+    }
+    $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+    $scope.ok = function() {
+        console.log($scope.data);
+        $scope.data.hospital_id = params.id;
+        $uibModalInstance.close($scope.data);
     };
 }]);

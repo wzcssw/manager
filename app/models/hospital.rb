@@ -5,6 +5,7 @@ class Hospital < ApplicationRecord
   has_many :bodies ,:through => :hospital_project_bodies
   has_many :diagnose_center_hospitals
   has_many :diagnose_centers, :through => :diagnose_center_hospitals
+  belongs_to :brand
   scope :code_by, ->(hospital_code){hospital_code.blank? ? nil : where(hospital_code: hospital_code).first}
   scope :opened, ->{where(open: true)}
 

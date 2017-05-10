@@ -35,6 +35,15 @@ services.factory('hospitalHttp', ['httpBase', function(httpBase) {
                     errorDo: errorDo,
                     alwaysDo: alwaysDo
                 });
+        },
+        save_brand: function (params, successDo, errorDo, alwaysDo) {
+            httpBase.post({
+                    url: '/hospitals/save_brand',
+                    params: params,
+                    successDo: successDo,
+                    errorDo: errorDo,
+                    alwaysDo: alwaysDo
+                });
         }
     }
 }]);

@@ -57,6 +57,19 @@ class Admin::V1::HospitalAPI < Grape::API
       present :success, true
     end
 
+    desc "保存医院品牌"
+    post :save_brand do
+      @brand = nil
+      if params[:id].present?
+        @brand = Brand.find(params[:id])
+      else
+        @brand = Brand.create()
+        Hospital.find(params[:hospital_id]).update(brand_id: @brand.id)
+      end
+      @brand.update(name: params[:name],logo_url: params[:logo_url],login_bg_url: params[:login_bg_url],main_color: params[:main_color])
+      present :success, @brand.present?
+    end
+
     desc "test"
     params do
     end
