@@ -2,11 +2,9 @@
     a:hover {
         cursor: pointer;
     }
-    
     .modal_input {
         margin-bottom: 7px;
     }
-
     .wb_label {
         position: relative;
         min-width: 160px;
@@ -17,7 +15,6 @@
         margin-bottom: 10px;
         padding: 8px;
     }
-
     .app-modal-window .modal-dialog {
         width: 25%;
     }
@@ -47,6 +44,7 @@
             <td>
                 <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_diagnose_center(row)">编辑</a>
                 <a class="btn btn-default btn-xs color_box" ng-click="set_binding_hospital(row)">设置绑定医院</a>
+                <a class="btn btn-default btn-xs color_box" ng-click="set_client(row)">设置阅片中心设备</a>
             </td>
         </tr>
         <tr ng-if="data_row.row_arr.length==0">
@@ -101,5 +99,91 @@
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>
+
+<!-- 阅片中心设备 -->
+<script type="text/ng-template" id="binding_client.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{diagnose_center.name}}-设备</h4>
+    </div>
+    <div class="modal-body">
+        <table class="table table-bordered table-hover">
+            <tr style="background-color:#f6f6f6;">
+                <th>代码</th>
+                <th>IP</th>
+                <th>端口号</th>
+                <th>AE Title</th>
+                <th>协议名称</th>
+                <th></th>
+            </tr>
+            <tr ng-repeat="row in clients">
+                <td>{{row.code}}</td>
+                <td>{{row.ip}}</td>
+                <td>{{row.port}}</td>
+                <td>{{row.aetitle}}</td>
+                <td>{{row.protocol_name}}</td>
+                <td>
+                    <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_dc_client(row)">编辑</a>
+                </td>
+            </tr>
+            <tr ng-if="clients.length==0">
+                <td colspan=6 style="text-align:center">(暂无数据)</td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="add_or_edit_dc_client()">新增</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</script>
+
+<!-- 阅片中心设备Form -->
+<script type="text/ng-template" id="client_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}设备</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">代码</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="data.code" placeholder="代码" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">IP</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.ip" class="form-control"  placeholder="IP"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">端口号</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.port" class="form-control"  placeholder="端口号"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">AE Title</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.aetitle" class="form-control" placeholder="AE Title"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">协议名称</label>
+                <div class="col-sm-9">
+                    <select ng-model="data.protocol_name" class="form-control">
+                        <option value="">请选择</option>
+                        <option value="dicom">dicom</option>
+                        <option value="rsync">rsync</option>
+                        <option value="http">http</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="save()">保存</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
     </div>
 </script>

@@ -129,5 +129,39 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       present :success, result.present?
     end
 
+    desc "阅片中心设备"
+    params do
+      requires :diagnose_center_id, type: String
+    end
+    get :dc_client_list do
+      @dc = DcClient.where(diagnose_center_id: params[:diagnose_center_id]).page(params[:page]).per(params[:page_size])
+      present :success, @dc.present?
+      present :row_arr, @dc
+      present :current_page, @dc.current_page
+      present :all_page, @dc.total_pages
+      present :row_count, @dc.total_count
+      present :page_size,@dc.size
+    end
+    
+    desc "保存阅片中心设备"
+    post :save_dc_client do
+      @dc = nil
+      if params[:id].present?
+        @dc = DcClient.find(params[:id])
+      else
+        @dc = DcClient.new
+      end
+      @dc.diagnose_center_id = params[:diagnose_center_id] if params[:diagnose_center_id].present?
+      @dc.code = params[:code]
+      @dc.ip = params[:ip]
+      @dc.port = params[:port]
+      @dc.aetitle = params[:aetitle]
+      @dc.protocol_name = params[:protocol_name]
+      @dc.save
+
+      present :success, @dc.present?
+      present :data, @dc
+    end
+
   end
 end

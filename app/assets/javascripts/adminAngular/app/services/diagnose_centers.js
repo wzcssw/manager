@@ -35,6 +35,24 @@ services.factory('diagnoseCentersHttp', ['httpBase', function(httpBase) {
                     errorDo: errorDo,
                     alwaysDo: alwaysDo
                 });
+        },
+        dc_client_list: function (params, successDo, errorDo, alwaysDo) {
+            httpBase.get({
+                    url: '/diagnose_centers/dc_client_list',
+                    params: params,
+                    successDo: successDo,
+                    errorDo: errorDo,
+                    alwaysDo: alwaysDo
+                });
+        },
+        save_dc_client: function (params, successDo, errorDo, alwaysDo) {
+            httpBase.post({
+                    url: '/diagnose_centers/save_dc_client',
+                    params: params,
+                    successDo: successDo,
+                    errorDo: errorDo,
+                    alwaysDo: alwaysDo
+                });
         }
     }
 }]);

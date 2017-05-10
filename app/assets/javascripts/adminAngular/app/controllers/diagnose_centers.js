@@ -103,6 +103,25 @@ controllers.controller('diagnoseCentersCtrl', ['$scope','$timeout', 'get_params'
           console.log('Modal dismissed at: ' + new Date());
       });
   }
+  // 设置绑定设备
+  $scope.set_client = function(row){
+    var modalInstance = $uibModal.open({
+          animation: true,
+          templateUrl: 'binding_client.html',
+          controller: 'bindingClientCtrl',
+          size: 'md',
+          resolve: {
+              params: row
+          }
+      });
+      modalInstance.result.then(function(params) {
+        //   diagnoseCentersHttp.binding_hospital(params,function(data){
+        //     $scope.get_page_data();
+        //   });
+      }, function() {
+          console.log('Modal dismissed at: ' + new Date());
+      });
+  }
   // 显示binding医院
   $scope.show_hospitals = function(hospitals){
     var hos = [];
@@ -222,4 +241,72 @@ controllers.controller('bindingDiagnoseCenterCtrl', ["$scope", "$uibModalInstanc
           return false;  
       } 
     }
+}]);
+
+// 设置绑定设备
+controllers.controller('bindingClientCtrl', ["$scope", "$uibModalInstance", "params","diagnoseCentersHttp","$uibModal", function($scope, $uibModalInstance, params,diagnoseCentersHttp,$uibModal) {
+    $scope.clients = [];
+    $scope.diagnose_center = params;
+    $scope.get_page_data = function() {
+        if(params == undefined){
+            return;
+        }
+        diagnoseCentersHttp.dc_client_list({ page: 1, page_size: 99999,diagnose_center_id: params.id}, function(result) {
+            if (!result.success) {
+                return;
+            }
+            $scope.clients = result.row_arr;
+        });
+    }
+    $scope.ok = function() {
+        $uibModalInstance.close({
+            id: $scope.data.id,
+            hospital_ids: $scope.result_ids
+        });
+    };
+    $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+    $scope.add_or_edit_dc_client = function(row){
+        var modalInstance = $uibModal.open({
+            animation: true,
+            templateUrl: 'client_form.html',
+            controller: 'clientFormCtrl',
+            windowClass: 'app-modal-window',
+            resolve: {
+                params: row
+            }
+        });
+        modalInstance.result.then(function(params) {
+              params.diagnose_center_id = $scope.diagnose_center.id;
+              diagnoseCentersHttp.save_dc_client(params,function(result){
+                   if(result.success) {
+                        $(".confirm").hide();
+                        swal({
+                            title: "保存成功",
+                            type: "success",
+                        });
+                        setTimeout(function() {
+                            $(".confirm").click();
+                        }, 1700);
+                        $scope.get_page_data();
+                    } else {
+                        return;
+                    }
+              });
+        }, function() { console.log('Modal dismissed at: ' + new Date()); });
+    };
+    $scope.get_page_data();
+}]);
+
+// 设置绑定设备Form
+controllers.controller('clientFormCtrl', ["$scope", "$uibModalInstance", "params","diagnoseCentersHttp", function($scope, $uibModalInstance, params,diagnoseCentersHttp) {
+    params == undefined ? $scope.title = "新增" : $scope.title = "编辑";
+    $scope.data = params;
+    $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+    };
+    $scope.save = function() {
+        $uibModalInstance.close($scope.data);
+    };
 }]);
