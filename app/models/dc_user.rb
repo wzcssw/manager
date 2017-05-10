@@ -13,8 +13,8 @@ class DcUser < ApplicationRecord
     save validate: false
   end
 
-  def self.authenticate(phone, password)
-    dc_user = where(phone: phone).first
+  def self.authenticate(username, password)
+    dc_user = where(username: username).first
     if dc_user
       dc_user =  dc_user.authenticated?(password) ? dc_user : nil
     else
