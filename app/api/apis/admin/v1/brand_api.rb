@@ -25,6 +25,7 @@ class Admin::V1::BrandAPI < Grape::API
         @brand.logo_url = params[:logo_url]
         @brand.login_bg_url = params[:login_bg_url]
         @brand.main_color = params[:main_color]
+        @brand.css_url = params[:css_url]
         @brand.save
 
         present :success, @brand.present?

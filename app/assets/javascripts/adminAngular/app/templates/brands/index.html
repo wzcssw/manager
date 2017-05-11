@@ -17,6 +17,7 @@
     <table class="table table-bordered table-hover"  style="margin-top:20px;">
         <tr style="background-color:#f6f6f6;">
             <th>名称</th>
+            <th>CSS地址</th>
             <th>Logo地址</th>
             <th>Logo地址(大)</th>
             <th>主色调</th>
@@ -24,6 +25,7 @@
         </tr>
         <tr ng-repeat="row in data_row.row_arr">
             <td>{{row.name}}</td>
+            <td>{{row.css_url}}</td>
             <td>{{row.logo_url}}</td>
             <td>{{row.login_bg_url}}</td>
             <td>
@@ -55,6 +57,12 @@
                 <label for="name" class="col-sm-3 control-label">名称</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" ng-model="data.name" placeholder="名称" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">CSS地址</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.css_url" class="form-control"  placeholder="CSS地址"/>
                 </div>
             </div>
             <div class="form-group">
