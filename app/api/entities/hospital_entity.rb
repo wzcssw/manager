@@ -8,6 +8,6 @@ class HospitalEntity < Grape::Entity
   expose :created_at, safe: true
   expose :open_time, safe: true
   expose :close_time, safe: true
-  expose :brand,with: BrandEntity
+  expose :brand, safe: true,with: BrandEntity
   
 end

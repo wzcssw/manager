@@ -19,6 +19,7 @@
             <th>医院名称</th>
             <th>所在城市</th>
             <th>营业状态</th>
+            <th>厂商</th>
             <th>操作</th>
         </tr>
         <tr ng-repeat="row in data_row.row_arr">
@@ -28,8 +29,10 @@
                 <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'grey'}">{{row.in_open ? '开启': '关闭'}}</a>
             </td>
             <td>
+                {{ row.brand.name }}
+            </td>
+            <td>
                 <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_hospital(row)">编辑</a>
-                <a class="btn btn-default btn-xs color_box" ng-click="edit_brand(row)">Logo</a>
             </td>
         </tr>
     </table>
@@ -64,6 +67,14 @@
                     </select>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-2 control-label">厂商</label>
+                <div class="col-sm-10">
+                    <select ng-model="brand" ng-options="b.name for b in brands track by b.id" class="form-control">
+                        <option value="">请选择厂商</option>
+                    </select>
+                </div>
+            </div>
             <div class="form-group" ng-show="title=='编辑医院'">
                 <label class="col-sm-2 control-label">上班时间</label>
                 <div class="col-sm-10">
@@ -80,44 +91,6 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
-        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
-    </div>
-</script>
-
-<script type="text/ng-template" id="editBrand.html">
-    <div class="modal-header">
-        <h4 class="modal-title">编辑品牌</h4>
-    </div>
-    <div class="modal-body">
-        <form class="form-horizontal" role="form">
-            <div class="form-group">
-                <label for="name" class="col-sm-3 control-label">名称</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" ng-model="data.name" placeholder="名称"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="city_id" class="col-sm-3 control-label">Logo地址</label>
-                <div class="col-sm-9">
-                    <input ng-model="data.logo_url" class="form-control" placeholder="Logo地址"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="city_id" class="col-sm-3 control-label">Logo地址(大)</label>
-                <div class="col-sm-9">
-                    <input ng-model="data.login_bg_url" class="form-control" placeholder="Logo地址(大)"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="city_id" class="col-sm-3 control-label">主色调</label>
-                <div class="col-sm-9">
-                    <input ng-model="data.main_color" class="form-control" placeholder="主色调"/>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
     </div>
 </script>

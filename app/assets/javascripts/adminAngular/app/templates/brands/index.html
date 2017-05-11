@@ -1,0 +1,85 @@
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+    
+    .modal_input {
+        margin-bottom: 7px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="table-operation">
+        <h3>厂商管理</h3>
+        <div style="height:30px;">
+            <button type="button" style="margin-bottom: 5px;" class="btn btn-primary btn-sm" ng-click="add_or_edit_brand()">添加厂商</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover"  style="margin-top:20px;">
+        <tr style="background-color:#f6f6f6;">
+            <th>名称</th>
+            <th>Logo地址</th>
+            <th>Logo地址(大)</th>
+            <th>主色调</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="row in data_row.row_arr">
+            <td>{{row.name}}</td>
+            <td>{{row.logo_url}}</td>
+            <td>{{row.login_bg_url}}</td>
+            <td>
+                <div ng-style="{'width': '34px','height': '12px','background-color':row.main_color,'display': 'inline-block','margin-right':'3px'}"></div>{{row.main_color}}
+            </td>
+            <td>
+                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_brand(row)">编辑</a>
+            </td>
+        </tr>
+        <tr ng-if="clients.length==0">
+            <td colspan=6 style="text-align:center">(暂无数据)</td>
+        </tr>
+    </table>
+    <div class='pagination' style="margin-top: 50px;float: right">
+        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"
+            force-ellipses="true"></uib-pagination>
+    </div>
+</div>
+
+
+<!-- brand Form -->
+<script type="text/ng-template" id="brand_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}厂商</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">名称</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" ng-model="data.name" placeholder="名称" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">Logo地址</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.logo_url" class="form-control"  placeholder="Logo地址"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">Logo地址(大)</label>
+                <div class="col-sm-9">
+                    <input ng-model="data.login_bg_url" class="form-control"  placeholder="Logo地址(大)"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">主色调</label>
+                <div class="col-sm-7">
+                    <input ng-model="data.main_color" class="form-control" placeholder="主色调"/>
+                </div>
+                <div ng-style="{'width': '78px','height': '33px','background-color':data.main_color,'display': 'inline-block' }"></div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" type="button" ng-click="ok()">保存</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">关闭</button>
+    </div>
+</script>

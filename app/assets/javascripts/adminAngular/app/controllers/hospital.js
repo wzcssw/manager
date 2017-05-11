@@ -1,4 +1,4 @@
-controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', function($scope, hospitalHttp,  $uibModal) {
+controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', function($scope, hospitalHttp, $uibModal) {
     $scope.maxSize = 5;
     $scope.city_arr = [];
     $scope.data_row = {
@@ -75,7 +75,8 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
             hospital_code: "",
             city_id: "",
             open_time: "",
-            close_time: ""
+            close_time: "",
+            brand: null
         };
         if(row){
             params.id = row.id;
@@ -84,6 +85,7 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
             params.hospital_code = row.hospital_code;
             params.open_time = row.open_time;
             params.close_time = row.close_time;
+            params.brand = row.brand;
         }
         params.city_arr = $scope.city_arr;
         var modalInstance = $uibModal.open({
@@ -101,49 +103,16 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
             console.log('Modal dismissed at: ' + new Date());
         });
     }
-    // 编辑 brand
-    $scope.edit_brand = function(row){
-        var modalInstance = $uibModal.open({
-            animation: true,
-            templateUrl: 'editBrand.html',
-            controller: 'editBrandCtrl',
-            size: 'md',
-            resolve: {
-                params: row
-            }
-        });
-        modalInstance.result.then(function(params) {
-            $scope.save_brand(params);
-        }, function() {
-            console.log('Modal dismissed at: ' + new Date());
-        });
-    };
-    // 保存brand
-    $scope.save_brand = function(params) {
-        hospitalHttp.save_brand(params, function(result) {
-            if (result.success) {
-                $(".confirm").hide();
-                swal({
-                    title: "保存成功",
-                    type: "success",
-                });
-                setTimeout(function() {
-                    $(".confirm").click();
-                }, 1700);
-            } else {
-                return;
-            }
-            $scope.get_page_data();
-        });
-    };
     $scope.init_data();
     $scope.get_page_data();
 }]);
 
 // 添加编辑医院
-controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "params", function($scope, $uibModalInstance, params) {
+controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "params","brandHttp", function($scope, $uibModalInstance, params,brandHttp) {
     var open_t = null;
     var close_t = null;
+    $scope.brands = [];
+    $scope.brand = null;
     if (params.open_time) {
         open_t = new Date();
         var o_t = params.open_time.split(":");
@@ -156,6 +125,7 @@ controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "para
         close_t.setHours(c_t[0]);
         close_t.setMinutes(c_t[1]);
     }
+    $scope.brand = params.brand;
     $scope.data = {
         id: params.id,
         name: params.name,
@@ -169,7 +139,12 @@ controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "para
     };
     $scope.title = '';
     $scope.data.id == "" ? $scope.title = '添加医院' : $scope.title = '编辑医院';
-
+    brandHttp.get_page_data({ page: 1, page_size: 999 },function(result) {
+        if (!result.success) {
+            return;
+        }
+        $scope.brands = result.row_arr;
+    });
     $scope.get_default_city = function() {
         for (var i = 0; i < $scope.data.city_arr.length; i++) {
             if ($scope.data.city_arr[i].id == $scope.data.city_id) {
@@ -205,26 +180,11 @@ controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "para
             city_id: $scope.data.city.id,
             city_name: $scope.data.city.name,
             open_time: open_time_str,
-            close_time: close_time_str
+            close_time: close_time_str,
+            brand_id: $scope.brand.id
         });
     };
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
-    };
-}]);
-
-// 添加编辑医院品牌
-controllers.controller('editBrandCtrl', ["$scope", "$uibModalInstance", "params", function($scope, $uibModalInstance, params) {
-    $scope.data = {};
-    if(params!=undefined){
-        $scope.data = params.brand;
-    }
-    $scope.cancel = function() {
-        $uibModalInstance.dismiss('cancel');
-    };
-    $scope.ok = function() {
-        console.log($scope.data);
-        $scope.data.hospital_id = params.id;
-        $uibModalInstance.close($scope.data);
     };
 }]);

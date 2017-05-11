@@ -1,11 +1,6 @@
 class Admin::V1::HospitalAPI < Grape::API
   resources :hospitals do
     desc "医院"
-    params do
-      # requires :url, type: String
-      # requires :method, type: String
-      # requires :param, type: JSON
-    end
     get :get_page_data do # /api/admin/v1/hospitals/get_page_data
       h_arr = Hospital.GetShowData(params)
       page_result = h_arr.page(params[:page]).per(params[:page_size])
@@ -33,8 +28,6 @@ class Admin::V1::HospitalAPI < Grape::API
         h.close_time = params[:close_time]
       else
         h  = Hospital.new
-        # cur_user = current_user
-        # h.user_id = cur_user.id
         h.open_time = "08:00"
         h.close_time = "17:30"
       end
@@ -42,6 +35,7 @@ class Admin::V1::HospitalAPI < Grape::API
       h.city_id = params[:city_id]
       h.city_name = params[:city_name]
       h.hospital_code = params[:hospital_code]
+      h.brand_id = params[:brand_id]
       h.save
       present :success, true
       present :data, h
@@ -55,19 +49,6 @@ class Admin::V1::HospitalAPI < Grape::API
     post :change_state do
       Hospital.find(params[:id]).update(in_open: params[:in_open])
       present :success, true
-    end
-
-    desc "保存医院品牌"
-    post :save_brand do
-      @brand = nil
-      if params[:id].present?
-        @brand = Brand.find(params[:id])
-      else
-        @brand = Brand.create()
-        Hospital.find(params[:hospital_id]).update(brand_id: @brand.id)
-      end
-      @brand.update(name: params[:name],logo_url: params[:logo_url],login_bg_url: params[:login_bg_url],main_color: params[:main_color])
-      present :success, @brand.present?
     end
 
     desc "test"

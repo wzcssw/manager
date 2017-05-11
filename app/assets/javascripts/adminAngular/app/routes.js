@@ -6,6 +6,11 @@ routes.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
             templateUrl: '/assets/adminAngular/app/templates/hospitals/index.html',
             controller: 'hospitalCtrl'
         })
+        .state('brands', {
+            url: '/brands',
+            templateUrl: '/assets/adminAngular/app/templates/brands/index.html',
+            controller: 'brandCtrl'
+        })
         .state('diagnose_centers', {
             url: '/diagnose_centers',
             templateUrl: '/assets/adminAngular/app/templates/diagnose_centers/index.html',
