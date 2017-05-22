@@ -10,7 +10,7 @@ namespace :task do
       d1 = DcUser.create(diagnose_center_id: dc.id,
                           username: "wzc", 
                           realname: "王志成", 
-                          password: "123456",
+                          password: "wangzc123123",
                           phone: "18648552460", 
                           email: '18648552460@163.com',
                           rank: 1)
@@ -19,7 +19,7 @@ namespace :task do
       d2 = DcUser.create(diagnose_center_id: dc.id,
                           username: "liuyk", 
                           realname: "玉奎", 
-                          password: "123456",
+                          password: "liuyk123456",
                           phone: "18612341234", 
                           email: '18612341234@163.com',
                           rank: 2)
@@ -28,7 +28,7 @@ namespace :task do
       d3 = DcUser.create(diagnose_center_id: dc.id,
                           username: "zhaoyy", 
                           realname: "友源", 
-                          password: "123456",
+                          password: "zhaoyy123456",
                           phone: "18612341235", 
                           email: '18612341235@163.com',
                           rank: 3)
@@ -37,7 +37,7 @@ namespace :task do
       d4 = DcUser.create(diagnose_center_id: dc.id,
                           username: "zyj", 
                           realname: "友尽", 
-                          password: "123456",
+                          password: "guoyoujin123",
                           phone: "15279058466", 
                           email: '15279058466@163.com',
                           rank: 4)
@@ -46,7 +46,7 @@ namespace :task do
       d5 = DcUser.create(diagnose_center_id: dc.id,
                           username: "lyf", 
                           realname: "李易峰", 
-                          password: "123456",
+                          password: "liyifeng123456",
                           phone: "18612341238", 
                           email: '18612341238@163.com',
                           rank: 5)
