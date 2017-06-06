@@ -31,7 +31,7 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
         });
     }
     // 修改医院状态
-    $scope.change_state = function(row) {
+    $scope.change_state = function(row,field) {
         $(".confirm").show();
         warn_confirm({
             title: "修改医院状态",
@@ -39,7 +39,7 @@ controllers.controller('hospitalCtrl', ['$scope',  'hospitalHttp', '$uibModal', 
             sure_func: function() {
                 hospitalHttp.change_state({
                     id: row.id,
-                    in_open: !row.in_open
+                    field: field
                 }, function(result) {
                     if (!result.success) {
                         return;

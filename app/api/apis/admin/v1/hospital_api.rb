@@ -44,11 +44,16 @@ class Admin::V1::HospitalAPI < Grape::API
     desc "修改检查医院状态"
     params do
       requires :id, type: String
-      requires :in_open ,type: Boolean
     end
     post :change_state do
-      Hospital.find(params[:id]).update(in_open: params[:in_open])
-      present :success, true
+      field = params[:field]
+      @hospital = Hospital.find(params[:id])
+      if field == "in_open"
+        @hospital.update(in_open: !@hospital.in_open)
+      elsif field == "is_unimed"
+        @hospital.update(is_unimed: !@hospital.is_unimed)
+      end
+      present :success, @hospital.present?
     end
 
     desc "test"

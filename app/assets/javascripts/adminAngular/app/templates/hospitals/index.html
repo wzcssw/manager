@@ -19,6 +19,7 @@
             <th>医院名称</th>
             <th>所在城市</th>
             <th>营业状态</th>
+            <th>同心联营点</th>
             <th>厂商</th>
             <th>操作</th>
         </tr>
@@ -26,7 +27,10 @@
             <td>{{row.name}}</td>
             <td>{{row.city_name}}</td>
             <td>
-                <a ng-click="change_state(row)" ng-style="row.in_open ?{color:'green'}:{color:'grey'}">{{row.in_open ? '开启': '关闭'}}</a>
+                <a ng-click="change_state(row,'in_open')" ng-style="row.in_open ?{color:'green'}:{color:'grey'}">{{row.in_open ? '开启': '关闭'}}</a>
+            </td>
+            <td>
+                <a ng-click="change_state(row,'is_unimed')" ng-style="row.is_unimed ?{color:'green'}:{color:'grey'}">{{row.is_unimed ? '是': '否'}}</a>
             </td>
             <td>
                 {{ row.brand.name }}
