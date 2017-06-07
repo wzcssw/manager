@@ -14,7 +14,7 @@ class DcCusReportTemplate < ApplicationRecord
                 is_symptom: rt.is_symptom,
                 is_positive: rt.is_positive,
                 project_id: rt.project_id,
-                rank: rt.rank
+                rank: rt.rank,
                 dc_user_id: d_user_id
             })
         end
