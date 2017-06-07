@@ -12,7 +12,9 @@ class DcCusReportTemplate < ApplicationRecord
                 expression: rt.expression,
                 diagnose: rt.diagnose,
                 is_symptom: rt.is_symptom,
-                rank: rt.rank,
+                is_positive: rt.is_positive,
+                project_id: rt.project_id,
+                rank: rt.rank
                 dc_user_id: d_user_id
             })
         end
