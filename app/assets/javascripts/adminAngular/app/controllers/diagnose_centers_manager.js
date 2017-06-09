@@ -83,10 +83,18 @@ controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenter
             setTimeout(function() {
                 $(".confirm").click();
             }, 1700);
-          } else {
-              return;
           }
           $scope.get_page_data();
+        },function(result){
+            console.log("MARK 222");
+            $(".confirm").hide();
+            swal({
+                title: "用户名已经存在",
+                type: "error",
+            });
+            setTimeout(function() {
+                $(".confirm").click();
+            }, 1700);
         });
     }
     // 显示角色
