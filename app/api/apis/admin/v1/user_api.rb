@@ -29,6 +29,7 @@ class Admin::V1::UserAPI < Grape::API
     desc "保存用户"
     post :save do
         result = false
+        msg = ""
         puser = params
         u = nil
         if puser[:id].present?
@@ -42,13 +43,19 @@ class Admin::V1::UserAPI < Grape::API
         u.realname = puser[:realname]
         u.phone = puser[:phone]
         u.password = puser[:password] if puser[:password].present?
-        result = u.save
-        # 如果新增的是医生用户、管理员用户则要生成报告自定义模板
-        cur_role = u.role
-        if puser[:id].blank? && ['h_admin','g_admin','read_doctor','check_doctor'].include?(cur_role.code)
-          CusReportTemplate.init_data_from_public(u.id)
+        begin
+          result = u.save
+          # 如果新增的是医生用户、管理员用户则要生成报告自定义模板
+          cur_role = u.role
+          if puser[:id].blank? && ['h_admin','g_admin','read_doctor','check_doctor'].include?(cur_role.code)
+            CusReportTemplate.init_data_from_public(u.id)
+          end
+        rescue ActiveRecord::RecordNotUnique => exception
+          result = false
+          msg = "用户名已经存在"
         end
         present :success, result
+        present :msg, msg
         present :data, u
     end
 
