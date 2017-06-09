@@ -76,6 +76,8 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       # requires :name, type: String
     end
     post :save_manager do
+      result = false
+      msg = ""
       @user = nil
       if params[:id].present?
         @user = DcUser.find(params[:id])
@@ -89,11 +91,18 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       @user.username = params[:username]
       @user.password = params[:password] if params[:password].present?
       @user.rank = params[:rank] if params[:rank].present?
-      result = @user.save
-      # 初始化报告模板
-      DcCusReportTemplate.init_data_from_public(@user.id)
-      DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create if result.present?
+      begin
+        @user.save
+        # 初始化报告模板
+        DcCusReportTemplate.init_data_from_public(@user.id)
+        DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create if result.present?
+        result = @user.present?
+      rescue ActiveRecord::RecordNotUnique => exception
+        result = false
+        msg = "用户名已经存在"
+      end
       present :success, result.present?
+      present :msg, msg
     end
 
     desc "角色列表"
