@@ -95,6 +95,15 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
               return;
           }
           $scope.get_page_data();
+        },function(result){
+            $(".confirm").hide();
+            swal({
+                title: "该用户已存在",
+                type: "error",
+            });
+            setTimeout(function() {
+                $(".confirm").click();
+            }, 1700);
         });
     };
     // enter
