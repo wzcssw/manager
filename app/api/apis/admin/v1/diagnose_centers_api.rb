@@ -78,12 +78,14 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
     end
     post :save_manager do
       result = false
+      first_save = false
       msg = ""
       @user = nil
       if params[:id].present?
         @user = DcUser.find(params[:id])
       else
         @user = DcUser.new
+        first_save = true
       end
       @user.diagnose_center_id = params[:diagnose_center_id]
       @user.email = params[:email]
@@ -92,11 +94,11 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       @user.username = params[:username]
       @user.password = params[:password] if params[:password].present?
       @user.rank = params[:rank] if params[:rank].present?
+      DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create if result.present?
       begin
         @user.save
         # 初始化报告模板
-        DcCusReportTemplate.init_data_from_public(@user.id)
-        DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create if result.present?
+        DcCusReportTemplate.init_data_from_public(@user.id) if first_save
         result = @user.present?
       rescue ActiveRecord::RecordNotUnique => exception
         result = false
