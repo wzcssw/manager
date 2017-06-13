@@ -147,11 +147,12 @@ controllers.controller('diagnoseCenterCtrl', ["$scope", "$uibModalInstance", "pa
             alert("名称不能为空");
             return;
         }
-        $uibModalInstance.close({
-            id: $scope.data.id,
-            name: $scope.data.name,
-            description: $scope.data.description
-        });
+        // $uibModalInstance.close({
+        //     id: $scope.data.id,
+        //     name: $scope.data.name,
+        //     description: $scope.data.description
+        // });
+        $uibModalInstance.close($scope.data);
     };
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');

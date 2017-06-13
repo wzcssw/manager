@@ -4,6 +4,7 @@ class DiagnoseCenterEntity < Grape::Entity
   expose :description, safe: true
   expose :is_open, safe: true
   expose :rank, safe: true
+  expose :examine_type, safe: true
   expose :hospitals,with: HospitalEntity
 
 end

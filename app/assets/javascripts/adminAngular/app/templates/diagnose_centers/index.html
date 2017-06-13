@@ -32,6 +32,7 @@
             <th>绑定医院</th>
             <th>营业状态</th>
             <th>描述</th>
+            <th>审核类型</th>
             <th></th>
         </tr>
         <tr ng-repeat="row in data_row.row_arr">
@@ -41,6 +42,7 @@
                 <a ng-click="change_state(row)" ng-style="row.is_open ?{color:'green'}:{color:'grey'}">{{row.is_open ? '开启': '关闭'}}</a>
             </td>
             <td>{{row.description}}</td>
+            <td>{{row.examine_type == "single_sign" ? "单签" : (row.examine_type == "double_sign" ? "双签" : "未知")}}</td>
             <td>
                 <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_diagnose_center(row)">编辑</a>
                 <a class="btn btn-default btn-xs color_box" ng-click="set_binding_hospital(row)">设置绑定医院</a>
@@ -73,6 +75,16 @@
                 <label for="city_id" class="col-sm-2 control-label">描述</label>
                 <div class="col-sm-10">
                     <input ng-model="data.description" class="form-control" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-2 control-label">审核类型</label>
+                <div class="col-sm-10">
+                    <select ng-model="data.examine_type" class="form-control">
+                        <option value="">请选择</option>
+                        <option value="single_sign">单签</option>
+                        <option value="double_sign">双签</option>
+                    </select>
                 </div>
             </div>
         </form>

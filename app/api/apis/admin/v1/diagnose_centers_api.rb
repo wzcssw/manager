@@ -14,7 +14,7 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
 
     desc "保存阅片中心"
     params do
-      requires :name, type: String
+      # requires :name, type: String
     end
     post :save do
       @dc = nil
@@ -27,6 +27,7 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       @dc.description = params[:description]
       @dc.is_open = params[:is_open] if params[:is_open].present?
       @dc.rank = params[:rank] if params[:rank].present?
+      @dc.examine_type = params[:examine_type] if params[:examine_type].present?
       @dc.save
       present :success, true
       present :data, @dc
