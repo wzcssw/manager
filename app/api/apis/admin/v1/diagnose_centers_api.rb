@@ -94,7 +94,10 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       @user.username = params[:username]
       @user.password = params[:password] if params[:password].present?
       @user.rank = params[:rank] if params[:rank].present?
-      DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create if params[:dc_role_id].present?
+      if params[:dc_role_id].present?
+        DcUserRole.where(dc_user_id: @user.id).delete_all
+        DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create
+      end
       begin
         @user.save
         # 初始化报告模板
