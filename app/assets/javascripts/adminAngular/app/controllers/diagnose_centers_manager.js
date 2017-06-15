@@ -73,6 +73,9 @@ controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenter
     }
     // 保存阅片中心人员
     $scope.save_dc_user = function(params){
+        if(params.dc_roles[0]){
+            params.dc_role_id = params.dc_roles[0].id;
+        }
         diagnoseCenterManagersHttp.save(params, function(result) {
           if(result.success) {
             $(".confirm").hide();
@@ -86,7 +89,6 @@ controllers.controller('diagnoseCentersManagerCtrl', ['$scope',  'diagnoseCenter
           }
           $scope.get_page_data();
         },function(result){
-            console.log("MARK 222");
             $(".confirm").hide();
             swal({
                 title: "用户名已经存在",
