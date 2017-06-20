@@ -297,6 +297,13 @@ controllers.controller('bindingClientCtrl', ["$scope", "$uibModalInstance", "par
               });
         }, function() { console.log('Modal dismissed at: ' + new Date()); });
     };
+    $scope.change_state = function(params){
+        params.diagnose_center_id = $scope.diagnose_center.id;
+        params.in_use = !params.in_use;
+        diagnoseCentersHttp.save_dc_client(params,function(result){
+            $scope.get_page_data();
+        });
+    }
     $scope.get_page_data();
 }]);
 

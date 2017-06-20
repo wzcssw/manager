@@ -127,6 +127,7 @@
                 <th>端口号</th>
                 <th>AE Title</th>
                 <th>协议名称</th>
+                <th>使用中</th>
                 <th></th>
             </tr>
             <tr ng-repeat="row in clients">
@@ -135,6 +136,9 @@
                 <td>{{row.port}}</td>
                 <td>{{row.aetitle}}</td>
                 <td>{{row.protocol_name}}</td>
+                <td>
+                    <a ng-click="change_state(row)" ng-style="row.in_use ? {'color':'blue'}:{'color':'grey'}">{{row.in_use?"是":"否"}}</a>
+                </td>
                 <td>
                     <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_dc_client(row)">编辑</a>
                 </td>
