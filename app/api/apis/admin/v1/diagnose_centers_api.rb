@@ -168,7 +168,7 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       end
       @dc.diagnose_center_id = params[:diagnose_center_id] if params[:diagnose_center_id].present?
       @dc.code = params[:code]
-      @dc.in_use = params[:in_use]
+      @dc.in_use = params[:in_use] if params[:in_use].present?
       @dc.ip = params[:ip]
       @dc.port = params[:port]
       @dc.aetitle = params[:aetitle]

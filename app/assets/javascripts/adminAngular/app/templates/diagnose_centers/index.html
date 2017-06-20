@@ -137,7 +137,7 @@
                 <td>{{row.aetitle}}</td>
                 <td>{{row.protocol_name}}</td>
                 <td>
-                    <a ng-click="change_state(row)" ng-style="row.in_use ? {'color':'blue'}:{'color':'grey'}">{{row.in_use?"是":"否"}}</a>
+                    <a ng-click="change_in_use_state(row)" ng-style="row.in_use ? {'color':'blue'}:{'color':'grey'}">{{row.in_use?"是":"否"}}</a>
                 </td>
                 <td>
                     <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_dc_client(row)">编辑</a>
