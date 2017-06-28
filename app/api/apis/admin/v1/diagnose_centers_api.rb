@@ -60,7 +60,7 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       # requires :id, type: String
     end
     get :dc_users do
-      @user = DcUser.page(params[:page]).per(params[:page_size])
+      @user = DcUser.order("created_at DESC").page(params[:page]).per(params[:page_size])
       @user = @user.where("realname like '%#{params[:search_realname]}%'") if params[:search_realname].present?
       @user = @user.where(diagnose_center_id: params[:search_diagnose_center]) if params[:search_diagnose_center].present?
 
@@ -94,10 +94,6 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       @user.username = params[:username]
       @user.password = params[:password] if params[:password].present?
       @user.rank = params[:rank] if params[:rank].present?
-      if params[:dc_role_id].present?
-        DcUserRole.where(dc_user_id: @user.id).delete_all
-        DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create
-      end
       begin
         @user.save
         # 初始化报告模板
@@ -106,6 +102,10 @@ class Admin::V1::DiagnoseCentersAPI < Grape::API
       rescue ActiveRecord::RecordNotUnique => exception
         result = false
         msg = "用户名已经存在"
+      end
+      if params[:dc_role_id].present? && result
+        DcUserRole.where(dc_user_id: @user.id).delete_all
+        DcUserRole.where(dc_user_id: @user.id,dc_role_id: params[:dc_role_id]).first_or_create
       end
       present :success, result.present?
       present :msg, msg
