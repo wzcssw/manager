@@ -2,7 +2,7 @@ class Admin::V1::UserAPI < Grape::API
   resources :users do
     desc "用户列表"
     get :get_page_data do
-        @users = User.page(params[:page]).per(params[:page_size])
+        @users = User.order("created_at DESC").page(params[:page]).per(params[:page_size])
         @users = @users.where("realname like '%#{params[:search_realname]}%'") if params[:search_realname].present?
         @users = @users.where(hospital_id: params[:search_hospital]) if params[:search_hospital].present?
         
