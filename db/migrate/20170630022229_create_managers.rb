@@ -1,9 +1,9 @@
 class CreateManagers < ActiveRecord::Migration[5.0]
   def change
     create_table :managers do |t|
-      t.string :username :varchar(255)
+      t.string :username,:limit => 255
       t.string :realname
-      t.string :phone :varchar(128)
+      t.string :phone,:limit => 128
       t.integer :role
       t.timestamps
     end

@@ -403,10 +403,10 @@ ActiveRecord::Schema.define(version: 20170630034532) do
   create_table "managers", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "username"
     t.string   "realname"
-    t.string   "phone"
+    t.string   "phone",           limit: 128
     t.integer  "role"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
     t.boolean  "disable"
     t.string   "password_digest"
     t.index ["phone"], name: "idx_managers_phone", unique: true, using: :btree
