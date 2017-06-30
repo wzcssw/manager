@@ -7,7 +7,7 @@ class CreateManagers < ActiveRecord::Migration[5.0]
       t.integer :role
       t.timestamps
     end
-    add_index :managers, :phone,unique: true, name: "idx_managers_phone"
-    add_index :managers, :username, unique: true, name: "idx_managers_usrnme"
+    add_index :managers, :phone,unique: true, name: "x_m_phone"
+    add_index :managers, :username, unique: true, name: "x_m_usrnme"
   end
 end
