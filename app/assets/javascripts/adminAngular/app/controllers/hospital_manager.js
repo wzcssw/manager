@@ -98,7 +98,7 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
         },function(result){
             $(".confirm").hide();
             swal({
-                title: "该用户已存在",
+                title: "保存失败",
                 type: "error",
             });
             setTimeout(function() {

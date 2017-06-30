@@ -31,6 +31,11 @@ routes.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
             templateUrl: '/assets/adminAngular/app/templates/hospitals/manager.html',
             controller: 'hospitalsManagerCtrl'
         })
+        .state('manager.administrator', {
+            url: '/administrator',
+            templateUrl: '/assets/adminAngular/app/templates/administrators/index.html',
+            controller: 'administratorCtrl'
+        })
     $urlRouterProvider.otherwise(home_page);
 }]);
 

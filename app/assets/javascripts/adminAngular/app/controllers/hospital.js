@@ -173,6 +173,10 @@ controllers.controller('hospitalFormCtrl', ["$scope", "$uibModalInstance", "para
         if ($scope.data.close_time != null) {
             close_time_str = ("0" + $scope.data.close_time.getHours()).slice(-2) + ":" + ("0" + $scope.data.close_time.getMinutes()).slice(-2);
         }
+        if(!$scope.brand){
+            $scope.brand = {};
+            $scope.brand.id = "";
+        }
         $uibModalInstance.close({
             id: $scope.data.id,
             name: $scope.data.name,

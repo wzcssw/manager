@@ -1,0 +1,95 @@
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+    .header-right{
+        float: right;
+        margin: 25px 0 20px 0;
+    }
+    .line{
+        display: inline-block;
+        width: 32%;
+    }
+    .modal_input {
+        margin-bottom: 7px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="header-right">
+        <button type="button" class="btn btn-primary btn-sm" ng-click="add_or_edit_user()">添加管理人员</button>
+    </div>
+    <table class="table table-bordered table-hover" style="margin-top:20px;">
+        <tr style="background-color:#f6f6f6;">
+            <th>账号</th>
+            <th>真实姓名</th>
+            <th>电话号码</th>
+            <th>角色</th>
+            <th>状态</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="row in data_row.row_arr">
+            <td>{{row.username}}</td>
+            <td>{{row.realname}}</td>
+            <td>{{row.phone}}</td>
+             <td>{{row.role_zh}}</td>
+             <td>
+                 <a ng-style="row.disable ?{color:'red'}:{color:'green'}" ng-click="change_state(row)">{{row.disable?'已禁用':'已启用'}}</a>
+             </td>
+            <td>
+                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_user(row)">编辑</a>
+            </td>
+        </tr>
+         <tr ng-if="data_row.row_arr.length<1">
+            <td colspan="6" style="text-align: center;">(暂无数据)</td>
+        </tr>
+    </table>
+    <div class='pagination' style="margin-top: 50px;float: right">
+        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"
+            force-ellipses="true"></uib-pagination>
+    </div>
+</div>
+
+<!-- 添加或编辑管理员 -->
+<script type="text/ng-template" id="add_or_edit_manager.html">
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">{{title}}管理人员</h4>
+    </div>
+    <div class="modal-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="name" class="col-sm-2 control-label">账户名</label>
+                <div class="col-sm-10 modal_input">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.username" placeholder="账户名">
+                </div>
+                <label for="name" class="col-sm-2 control-label">真实姓名</label>
+                <div class="col-sm-10 modal_input">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.realname" placeholder="真实姓名">
+                </div>
+                <label for="name" class="col-sm-2 control-label">角色</label>
+                <div class="col-sm-10 modal_input">
+                    <select ng-model="data.role" class="form-control ng-pristine ng-untouched ng-valid ng-empty">
+                        <option value="">请选择角色</option>
+                        <option value="admin">管理员</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <label for="name" class="col-sm-2 control-label">电话</label>
+                <div class="col-sm-10 modal_input">
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.phone" placeholder="电话">
+                </div>
+                <div>
+                    <label for="name" class="col-sm-2 control-label">密码</label>
+                    <div class="col-sm-10 modal_input">
+                        <input ng-model="data.password" type="password" class="form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="密码">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="text-align: right;">
+            <span ng-show="has_err" style="float:left;margin-left:30px;color:red;">{{err_msg}}</span>
+            <button class="btn btn-primary" type="button" ng-click="ok()">保存</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>
