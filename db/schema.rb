@@ -409,8 +409,8 @@ ActiveRecord::Schema.define(version: 20170630034532) do
     t.datetime "updated_at",      null: false
     t.boolean  "disable"
     t.string   "password_digest"
-    t.index ["phone"], name: "index_managers_on_phone", unique: true, using: :btree
-    t.index ["username"], name: "index_managers_on_username", unique: true, using: :btree
+    t.index ["phone"], name: "idx_managers_phone", unique: true, using: :btree
+    t.index ["username"], name: "idx_managers_usrnme", unique: true, using: :btree
   end
 
   create_table "meetings", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
