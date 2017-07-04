@@ -1,0 +1,2 @@
+class CcRole < ApplicationRecord
+end

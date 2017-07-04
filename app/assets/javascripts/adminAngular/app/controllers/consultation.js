@@ -1,4 +1,5 @@
-controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp','hospitalHttp', '$uibModal', function($scope, hospitalManagersHttp, hospitalHttp, $uibModal) {
+// 会诊中心人员管理
+controllers.controller('consultationCtrl', ['$scope',  'consultationHttp', '$uibModal', function($scope, consultationHttp, $uibModal) {
     $scope.maxSize = 5;
     $scope.city_arr = [];
     $scope.search_hospital = "";
@@ -11,7 +12,7 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
         page_size:10
     };
     $scope.get_page_data = function() {
-        hospitalManagersHttp.get_page_data({
+        consultationHttp.get_page_data({
             page: $scope.data_row.current_page,
             page_size: $scope.data_row.page_size,
             search_hospital: $scope.search_hospital.id,
@@ -25,12 +26,12 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
             $scope.data_row.row_count = result.row_count;
         });
     };
-    // 添加或编辑User
-    $scope.add_or_edit_user = function (row) {
+    // 添加或编辑Meeting
+    $scope.add_or_edit_consultation = function (row) {
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'add_or_edit_user.html',
-            controller: 'addOrEditUserCtrl',
+            templateUrl: 'add_or_edit_consultation.html',
+            controller: 'addOrEditConsultationCtrl',
             windowClass: 'app-modal-window',
             resolve: {
                 params: row
@@ -43,11 +44,11 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
         });
     };
     // 添加或编辑角色
-    $scope.add_or_edit_dc_role = function(row){
+    $scope.add_or_edit_cc_role = function(row){
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'user_role_form.html',
-            controller: 'userRoleFormCtrl',
+            templateUrl: 'cc_role_form.html',
+            controller: 'ccRoleFormCtrl',
             size: 'md',
             // windowClass: 'app-modal-window',
             resolve: {
@@ -59,16 +60,16 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
         }, function() {
             console.log('Modal dismissed at: ' + new Date());
         });
-    }
+    };
     // 修改用户状态
     $scope.change_state = function(row) {
-        var tmp_str = (row.is_delete ? '启用' : '禁用');
+        var tmp_str = (row.is_use ? '禁用' : '启用');
         $(".confirm").show();
         warn_confirm({
             title: tmp_str,
             text: "确定" + tmp_str + "该用户吗？",
             sure_func: function() {
-                hospitalManagersHttp.change_state({ id: row.id, is_delete: !row.is_delete }, function(result) {
+                consultationHttp.change_state({ id: row.id }, function(result) {
                     if (!result.success) {
                         return;
                     }
@@ -79,9 +80,9 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
     }
     // 保存User
     $scope.save = function(params){
-        params.hospital_id = params.hospital.id;
-        params.role_id = params.role.id;
-        hospitalManagersHttp.save(params, function(result) {
+        params.cc_role_id = params.role.id;
+        params.consultation_center_id = params.consultation_center.id;
+        consultationHttp.save(params, function(result) {
           if(result.success) {
             $(".confirm").hide();
             swal({
@@ -106,55 +107,45 @@ controllers.controller('hospitalsManagerCtrl', ['$scope',  'hospitalManagersHttp
             }, 1700);
         });
     };
-    // enter
-    $scope.search_keydown = function($event) {
-        if ($event.keyCode === 13) {
-            $scope.get_page_data();
-        }
-    };
-    $scope.init = function () {
-        hospitalHttp.get_page_data({ page: 1, page_size: 9999 }, function(result) { // 载入所属阅片中心
-            if (!result.success)
-                return;
-            $scope.hospitals = result.row_arr;
-        });
-    }
-    $scope.init();
     $scope.get_page_data();
 }]);
 
-// 添加编辑医院
-controllers.controller('addOrEditUserCtrl', ["$scope", "$uibModalInstance", "params","hospitalHttp","hospitalManagersHttp", function($scope, $uibModalInstance, params,hospitalHttp,hospitalManagersHttp) {
+// 添加编辑Consultation
+controllers.controller('addOrEditConsultationCtrl', ["$scope", "$uibModalInstance", "params","consultationHttp", function($scope, $uibModalInstance, params,consultationHttp) {
     $scope.data = params;
     $scope.hospitals = [];
     $scope.roles = [];
+    $scope.consultation_centers = [];
     params == undefined ? $scope.title = '添加' : $scope.title = '编辑';
     if(params == undefined){
         $scope.data = {};
-    }
+    }else{
+        $scope.data.role = params.cc_role;
+        $scope.data.consultation_center = params.consultation_center;
+    };
     $scope.init = function () {
-        hospitalHttp.get_page_data({ page: 1, page_size: 999 }, function(result) {
-            if (!result.success)
-                return;
-            $scope.hospitals = result.row_arr;
-        });
-        hospitalManagersHttp.get_roles({ page: 1, page_size: 999 }, function(result) {
+        consultationHttp.get_roles({ page: 1, page_size: 999 }, function(result) {
             if (!result.success)
                 return;
             $scope.roles = result.row_arr;
         });
+        consultationHttp.get_consultations({ page: 1, page_size: 999 }, function(result) {
+            if (!result.success)
+                return;
+            $scope.consultation_centers = result.row_arr;
+        });
     }
     $scope.ok = function() {
-        if ($scope.data.name == undefined || $scope.data.name.trim() == "") {
+        if ($scope.data.username == undefined || $scope.data.username.trim() == "") {
             alert("账户名不能为空");
-            return;
-        }
-        if ($scope.data.hospital == undefined || $scope.data.hospital == null) {
-            alert("医院名不能为空");
             return;
         }
         if ($scope.data.realname == undefined || $scope.data.realname.trim() == "") {
             alert("真实姓名不能为空");
+            return;
+        }
+        if ($scope.data.consultation_center == undefined || $scope.data.consultation_center == null) {
+            alert("会诊中心不能为空");
             return;
         }
         if ($scope.data.role == undefined || $scope.data.role == null) {
@@ -181,21 +172,21 @@ controllers.controller('addOrEditUserCtrl', ["$scope", "$uibModalInstance", "par
 
 
 // 角色
-controllers.controller('userRoleFormCtrl', ["$scope", "$uibModalInstance", "params","hospitalManagersHttp",'$uibModal', function($scope, $uibModalInstance, params,hospitalManagersHttp,$uibModal) {
+controllers.controller('ccRoleFormCtrl', ["$scope", "$uibModalInstance", "params","consultationHttp",'$uibModal', function($scope, $uibModalInstance, params,consultationHttp,$uibModal) {
     $scope.data = params;
     $scope.roles = [];
     $scope.get_page_data = function(){
-        hospitalManagersHttp.get_roles({ page: 1, page_size: 9999 }, function(result) { // 载入角色
+        consultationHttp.get_roles({ page: 1, page_size: 9999 }, function(result) { // 载入角色
             if (!result.success)
                 return;
             $scope.roles = result.row_arr;
         });
-    };
-    $scope.add_or_edit_role = function(row){
+    }
+    $scope.add_or_edit_cc_role = function(row){
         var modalInstance = $uibModal.open({
             animation: true,
-            templateUrl: 'add_or_edit_user_role_form.html',
-            controller: 'addOrEditUserRoleCtrl',
+            templateUrl: 'add_or_edit_cc_role_form.html',
+            controller: 'addOrEditCcRoleCtrl',
             windowClass: 'app-modal-window-sm',
             resolve: {
                 params: row
@@ -212,7 +203,7 @@ controllers.controller('userRoleFormCtrl', ["$scope", "$uibModalInstance", "para
     };
     // 保存角色
     $scope.save_role = function(params){
-        hospitalManagersHttp.save_role(params, function(result) {
+        consultationHttp.save_role(params, function(result) {
           if(result.success) {
             $(".confirm").hide();
             swal({
@@ -231,8 +222,9 @@ controllers.controller('userRoleFormCtrl', ["$scope", "$uibModalInstance", "para
     $scope.get_page_data();
 }]);
 
+
 // 编辑角色form
-controllers.controller('addOrEditUserRoleCtrl', ["$scope", "$uibModalInstance", "params", function($scope, $uibModalInstance, params) {
+controllers.controller('addOrEditCcRoleCtrl', ["$scope", "$uibModalInstance", "params", function($scope, $uibModalInstance, params) {
     params == undefined ? $scope.title = '添加' : $scope.title = '编辑';
     $scope.role = {};
     if(params != undefined){

@@ -1,0 +1,66 @@
+<style>
+    a:hover {
+        cursor: pointer;
+    }
+    
+    .modal_input {
+        margin-bottom: 7px;
+    }
+</style>
+<div class="container-fluid">
+    <div class="table-operation">
+        <h3>会诊中心</h3>
+        <div style="height:30px;">
+            <button type="button" style="margin-bottom: 5px;" class="btn btn-primary btn-sm" ng-click="add_or_edit_consultation_center()">添加会诊中心</button>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover" style="margin-top:20px;">
+        <tr style="background-color:#f6f6f6;">
+            <th>会诊中心名称</th>
+            <th>描述</th>
+            <th>状态</th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="row in data_row.row_arr">
+            <td>{{row.name}}</td>
+            <td>{{row.description}}</td>
+            <td>
+                <a ng-click="change_state(row,'is_open')" ng-style="row.is_open ?{color:'green'}:{color:'grey'}">{{row.is_open ? '开启': '关闭'}}</a>
+            </td>
+            <td>
+                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_consultation_center(row)">编辑</a>
+            </td>
+        </tr>
+    </table>
+    <div class='pagination' style="margin-top: 50px;float: right">
+        <uib-pagination first-text="首页" next-text="下一页" previous-text="上一页" last-text="尾页" total-items="data_row.row_count" items-per-page="data_row.page_size" ng-model="data_row.current_page" max-size="5" ng-change="get_page_data()" class="pagination-sm" boundary-links="true"
+            force-ellipses="true"></uib-pagination>
+    </div>
+</div>
+
+<script type="text/ng-template" id="consultation_center_form.html">
+    <div class="modal-header">
+        <h4 class="modal-title">{{title}}</h4>
+    </div>
+    <div class="modal-body">
+        <form class="form-horizontal" role="form">
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">会诊中心名称</label>
+                <div class="col-sm-9">
+                    <input id="name" type="text" class="form-control" ng-model="data.name" placeholder="会诊中心名称"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="city_id" class="col-sm-3 control-label">描述</label>
+                <div class="col-sm-9">
+                    <input id="hospital_code" name="hospital_code" ng-model="data.description" class="form-control" placeholder="描述" />
+                </div>
+            </div>
+           
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+    </div>
+</script>

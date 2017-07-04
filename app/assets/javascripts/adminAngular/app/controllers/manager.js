@@ -9,8 +9,9 @@ controllers.controller('managerCtrl', ['$scope', '$uibModal',  'get_params', '$s
     })
     $scope.current_tabindex = 0;
     $scope.tabarr = [
-        { name: "阅片中心人员", url: "manager.diagnose_centers_manager"},
         { name: "医院人员", url: "manager.hospitals_manager"},
+        { name: "阅片中心人员", url: "manager.diagnose_centers_manager"},
+        { name: "会诊中心人员", url: "manager.consultation_manager"},
         { name: "管理人员", url: "manager.administrator"}
     ];
     $scope.go_tab = function(index) {

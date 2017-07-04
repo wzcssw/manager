@@ -16,6 +16,11 @@ routes.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
             templateUrl: '/assets/adminAngular/app/templates/diagnose_centers/index.html',
             controller: 'diagnoseCentersCtrl'
         })
+        .state('consultation_centers', {
+            url: '/consultation_centers',
+            templateUrl: '/assets/adminAngular/app/templates/consultations/index.html',
+            controller: 'consultationCentersCtrl'
+        })
         .state('manager', {
             url: '/manager',
             templateUrl: '/assets/adminAngular/app/templates/manager.html',
@@ -35,6 +40,11 @@ routes.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, 
             url: '/administrator',
             templateUrl: '/assets/adminAngular/app/templates/administrators/index.html',
             controller: 'administratorCtrl'
+        })
+        .state('manager.consultation_manager', {
+            url: '/consultation_manager',
+            templateUrl: '/assets/adminAngular/app/templates/consultations/manager.html',
+            controller: 'consultationCtrl'
         })
     $urlRouterProvider.otherwise(home_page);
 }]);

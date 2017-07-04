@@ -1,0 +1,2 @@
+class ConsultationCenter < ApplicationRecord
+end

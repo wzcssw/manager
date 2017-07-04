@@ -18,38 +18,35 @@
     }
 </style>
 <div class="container-fluid">
-    <div style="float: left;margin: 25px 0 18px 0">
-        <label>所属医院：</label>
-        <select ng-model="search_hospital" ng-change="get_page_data()" ng-options="h as h.name for h in hospitals" class="form-control input-sm" style="width: 130px; display: inline-block">
-            <option value="">全部</option>
-        </select>
-        <span style="width: 30px; display: inline-block"></span>
-        <label>姓名：</label>
-        <input type="text" ng-keypress="search_keydown($event)" class="form-control line"  ng-model="search_realname" placeholder="姓名">
-    </div>
     <div class="header-right">
-        <button type="button" class="btn btn-primary btn-sm" ng-click="add_or_edit_user()">添加医院人员</button>
-        <button type="button" class="btn btn-primary btn-sm" ng-click="add_or_edit_dc_role()">角色</button>
+        <button type="button" class="btn btn-primary btn-sm" ng-click="add_or_edit_consultation()">添加人员</button>
+        <button type="button" class="btn btn-primary btn-sm" ng-click="add_or_edit_cc_role()">角色</button>
     </div>
     <table class="table table-bordered table-hover" style="margin-top:20px;">
         <tr style="background-color:#f6f6f6;">
             <th>账号</th>
             <th>真实姓名</th>
-            <th>医院名称</th>
             <th>电话号码</th>
             <th>角色</th>
+            <th>所属会诊中心</th>
+            <th>状态</th>
             <th></th>
         </tr>
         <tr ng-repeat="row in data_row.row_arr">
-            <td>{{row.name}}</td>
+            <td>{{row.username}}</td>
             <td>{{row.realname}}</td>
-            <td>{{row.hospital.name}}</td>
             <td>{{row.phone}}</td>
-             <td>{{row.role.description}}</td>
+             <td>{{row.cc_role.description}}</td>
+             <td>{{row.consultation_center.description}}</td>
+             <td>
+                 <a ng-style="row.is_use ?{color:'green'}:{color:'red'}" ng-click="change_state(row)">{{row.is_use?'已启用':'已禁用'}}</a>
+             </td>
             <td>
-                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_user(row)">编辑</a>
-                <a class="btn btn-xs color_box" ng-class="{true:'btn-success',false:'btn-danger'}[row.is_delete]" ng-click="change_state(row)">{{row.is_delete?'启用':'禁用'}}</a>
+                <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_consultation(row)">编辑</a>
             </td>
+        </tr>
+         <tr ng-if="data_row.row_arr.length<1">
+            <td colspan="6" style="text-align: center;">(暂无数据)</td>
         </tr>
     </table>
     <div class='pagination' style="margin-top: 50px;float: right">
@@ -58,41 +55,34 @@
     </div>
 </div>
 
-<!-- 添加或编辑用户 -->
-<script type="text/ng-template" id="add_or_edit_user.html">
+<!-- 添加或编辑管理员 -->
+<script type="text/ng-template" id="add_or_edit_consultation.html">
     <div class="modal-header">
         <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title">{{title}}用户</h4>
+        <h4 class="modal-title">{{title}}管理人员</h4>
     </div>
     <div class="modal-body">
         <div class="form-horizontal">
             <div class="form-group">
                 <label for="name" class="col-sm-2 control-label">账户名</label>
                 <div class="col-sm-10 modal_input">
-                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.name" placeholder="账户名">
-                </div>
-                <label for="name" class="col-sm-2 control-label">医院名称</label>
-                <div class="col-sm-10 modal_input">
-                    <select ng-options="hospital as hospital.name for hospital in hospitals track by hospital.id" ng-model="data.hospital" class="form-control ng-pristine ng-untouched ng-valid ng-empty">
-                    </select>
+                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.username" placeholder="账户名">
                 </div>
                 <label for="name" class="col-sm-2 control-label">真实姓名</label>
                 <div class="col-sm-10 modal_input">
                     <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.realname" placeholder="真实姓名">
                 </div>
+                <label for="name" class="col-sm-2 control-label">会诊中心</label>
+                <div class="col-sm-10 modal_input">
+                    <select ng-options="cc as cc.description for cc in consultation_centers track by cc.id" ng-model="data.consultation_center" class="form-control ng-pristine ng-untouched ng-valid ng-empty">
+                        <option value="">请选择所属会诊中心</option>
+                    </select>
+                </div>
                 <label for="name" class="col-sm-2 control-label">角色</label>
                 <div class="col-sm-10 modal_input">
-                    <select ng-options="role as role.description for role in roles track by role.id" ng-model="data.role" class="form-control ng-pristine ng-untouched ng-valid ng-empty"></select>
-                </div>
-                <label for="name" class="col-sm-2 control-label" ng-show="can_dh_show()">绑定医院</label>
-                <div class="col-sm-10 modal_input" ng-show="can_dh_show()">
-                    <label class="checkbox-inline" ng-repeat="h in hospitals">
-                        <input type="checkbox" id="{{h.id}}" ng-model="h.is_checked" />{{h.name}} 
-                    </label>
-                </div>
-                <label class="col-sm-2 control-label" ng-show="data.role.name=='医生'">报告医生</label>
-                <div class="col-sm-10 modal_input" ng-show="data.role.name=='医生'">
-                    <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="data.report_doctor" placeholder="报告医生">
+                    <select ng-options="role as role.description for role in roles track by role.id" ng-model="data.role" class="form-control ng-pristine ng-untouched ng-valid ng-empty">
+                        <option value="">请选择角色</option>
+                    </select>
                 </div>
                 <label for="name" class="col-sm-2 control-label">电话</label>
                 <div class="col-sm-10 modal_input">
@@ -114,8 +104,9 @@
     </div>
 </script>
 
+
 <!-- 新增或编辑角色 -->
-<script type="text/ng-template" id="user_role_form.html">
+<script type="text/ng-template" id="cc_role_form.html">
     <div class="modal-header">
         <h4 class="modal-title">角色</h4>
     </div>
@@ -123,14 +114,16 @@
         <table class="table table-bordered table-hover">
             <tr style="background-color:#f6f6f6;">
                 <th>名称</th>
+                <th>编码</th>
                 <th>描述</th>
                 <th></th>
             </tr>
             <tr ng-repeat="row in roles">
                 <td>{{row.name || "--"}}</td>
+                <td>{{row.code || "--"}}</td>
                 <td>{{row.description || "--"}}</td>
                 <td>
-                    <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_role(row)">编辑</a>
+                    <a class="btn btn-primary btn-xs color_box" ng-click="add_or_edit_cc_role(row)">编辑</a>
                 </td>
             </tr>
             <tr ng-if="roles.length==0">
@@ -139,13 +132,13 @@
         </table>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success" type="button" ng-click="add_or_edit_role()">新增</button>
+        <button class="btn btn-success" type="button" ng-click="add_or_edit_cc_role()">新增</button>
         <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
     </div>
 </script>
 
 <!-- 新增或编辑角色form -->
-<script type="text/ng-template" id="add_or_edit_user_role_form.html">
+<script type="text/ng-template" id="add_or_edit_cc_role_form.html">
     <div class="modal-header">
         <h4 class="modal-title">{{title}}角色</h4>
     </div>
