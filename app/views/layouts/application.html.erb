@@ -10,7 +10,8 @@
   <link rel="shortcut icon" type="image/x-icon" media="screen" href="assets/tongxin_sm.png">
   <script type="text/javascript">
     var home_page = "hospitals";
-    var menu_arr = [{name:'医院',url:'#/hospitals'},{name:'厂商',url:'#/brands'},{name:'阅片中心',url:'#/diagnose_centers'},{name:'会诊中心',url:'#/consultation_centers'},{name:'人员管理',url:'#/manager/hospitals_manager'}]
+    // var menu_arr = [{name:'医院',url:'#/hospitals'},{name:'厂商',url:'#/brands'},{name:'阅片中心',url:'#/diagnose_centers'},{name:'会诊中心',url:'#/consultation_centers'},{name:'人员管理',url:'#/manager/hospitals_manager'}]
+    var menu_arr = [{name:'医院',url:'#/hospitals',icon: ['glyphicon','glyphicon-plus-sign']},{name:'厂商',url:'#/brands',icon: ['glyphicon','glyphicon-home']},{name:'阅片中心',url:'#/diagnose_centers',icon: ['glyphicon','glyphicon-cloud']},{name:'会诊中心',url:'#/consultation_centers',icon: ['glyphicon','glyphicon-facetime-video']},{name:'人员管理',url:'#/manager/hospitals_manager',icon: ['glyphicon','glyphicon-user']}]
   </script>
   <style type="text/css" >
   html {
@@ -120,7 +121,7 @@
       <div class="content_c_c">
         <div class="content_c_c_l">
           <div class="main_menu" ng-class="{'main_menu_active':cur_menu==menu}" ng-repeat="menu in menu_arr" ng-click="open_menu(menu)" >
-            <span class="glyphicon glyphicon-user" ng-class="menu.name == '医生' ? ['glyphicon','glyphicon-user']: ['glyphicon','glyphicon-file']" style="color: #689bf3"></span>&nbsp;{{menu.name}}
+            <span ng-class="menu.icon" style="color: #689bf3"></span>&nbsp;{{menu.name}}
           </div>
         </div>
         <div class="content_c_c_c">
