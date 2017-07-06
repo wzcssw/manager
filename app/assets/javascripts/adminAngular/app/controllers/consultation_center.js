@@ -140,7 +140,7 @@ controllers.controller('addOrEditConsultationCenterCtrl', ["$scope", "$uibModalI
             alert("名称不能为空");
             return;
         }
-        if (!$scope.hospital) {
+        if ($scope.data.hospital == undefined || $scope.data.hospital == null) {
             alert("绑定医院不能为空");
             return;
         }
