@@ -27,6 +27,7 @@ class Admin::V1::ConsultationAPI < Grape::API
         end
         cc.name = puser[:name]
         cc.description = puser[:description]
+        cc.hospital_id = puser[:hospital_id]
         begin
           result = cc.save
         rescue ActiveRecord::RecordNotUnique => exception

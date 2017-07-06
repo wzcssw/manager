@@ -79,6 +79,9 @@ controllers.controller('consultationCentersCtrl', ['$scope',  'consultationHttp'
     }
     // 保存consultation_center
     $scope.save = function(params){
+        if (params.hospital){
+            params.hospital_id = params.hospital.id;
+        }
         consultationHttp.save_consultation_center(params, function(result) {
           if(result.success) {
             $(".confirm").hide();
@@ -108,11 +111,12 @@ controllers.controller('consultationCentersCtrl', ['$scope',  'consultationHttp'
 }]);
 
 // 添加编辑Consultation
-controllers.controller('addOrEditConsultationCenterCtrl', ["$scope", "$uibModalInstance", "params","consultationHttp", function($scope, $uibModalInstance, params,consultationHttp) {
+controllers.controller('addOrEditConsultationCenterCtrl', ["$scope", "$uibModalInstance", "params","consultationHttp","hospitalHttp", function($scope, $uibModalInstance, params,consultationHttp,hospitalHttp) {
     $scope.data = params;
     $scope.hospitals = [];
     $scope.roles = [];
     $scope.consultation_centers = [];
+    $scope.hospitals = [];
     params == undefined ? $scope.title = '添加' : $scope.title = '编辑';
     if(params == undefined){
         $scope.data = {};
@@ -120,10 +124,24 @@ controllers.controller('addOrEditConsultationCenterCtrl', ["$scope", "$uibModalI
         $scope.data.role = params.cc_role;
         $scope.data.consultation_center = params.consultation_center;
     };
-    
+    $scope.init_data = function(){
+        hospitalHttp.get_page_data({
+            page: 1,
+            page_size: 999
+        }, function(result) {
+            if (!result.success) {
+                return;
+            }
+            $scope.hospitals = result.row_arr;
+        });
+    }; 
     $scope.ok = function() {
         if ($scope.data.name == undefined || $scope.data.name.trim() == "") {
             alert("名称不能为空");
+            return;
+        }
+        if (!$scope.hospital) {
+            alert("绑定医院不能为空");
             return;
         }
         $uibModalInstance.close($scope.data);
@@ -131,4 +149,5 @@ controllers.controller('addOrEditConsultationCenterCtrl', ["$scope", "$uibModalI
     $scope.cancel = function() {
         $uibModalInstance.dismiss('cancel');
     };
+    $scope.init_data();
 }]);
