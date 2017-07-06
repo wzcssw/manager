@@ -74,6 +74,24 @@ filters.filter('stateDesc', function() {
         }
     }
 });
+filters.filter('piStateDescByCode', function() {
+    return function(state_code, state_arr) {
+        if (state_code != null) {
+            var tmp_state = state_arr.find(function(item) {
+                if (item.code == state_code) {
+                    return true;
+                }
+            });
+            if (tmp_state) {
+                return tmp_state.text;
+            } else {
+                return state_code;
+            }
+        } else {
+            return state_code;
+        }
+    }
+});
 filters.filter('noneTShow', function() {
     return function(time, placeholder) {
         if (time != null && time != '') {
@@ -132,6 +150,16 @@ filters.filter('patientReportStateDesc', function() {
     }
 });
 
+filters.filter('patientSexDescByIndex', function() {
+    return function(sex) {
+        if (sex != null) {
+            var result = ['女', '男', '未知'];
+            return result[sex];
+        } else {
+            return sex;
+        }
+    }
+});
 filters.filter('patientSexDesc', function() {
     return function(sex_code) {
         if (sex_code != null) {

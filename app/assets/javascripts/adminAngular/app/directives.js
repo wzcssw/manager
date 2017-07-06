@@ -68,6 +68,36 @@ directives.directive('selectParent', function() {
     };
 });
 
+directives.directive('historyReportArr', function() {
+    return {
+        restrict: 'E',
+        scope: false,
+        templateUrl: function(elem, attr) {
+            return '/assets/adminAngular/app/templates/report/history_arr.html'
+        }
+    };
+});
+
+directives.directive('medicalForm', function() {
+    return {
+        restrict: 'E',
+        scope: false,
+        templateUrl: function(elem, attr) {
+            return '/assets/adminAngular/app/templates/patientInfo/medical_form.html'
+        }
+    };
+});
+
+directives.directive('matchFilm', function() {
+    return {
+        restrict: 'E',
+        scope: false,
+        templateUrl: function(elem, attr) {
+            return '/assets/adminAngular/app/templates/patientInfo/match_film.html'
+        }
+    };
+});
+
 directives.directive('stringToNumber', function() {
     return {
         require: 'ngModel',
@@ -89,6 +119,26 @@ directives.directive('film', function() {
         scope: false,
         templateUrl: function(elem, attr) {
             return '/assets/adminAngular/app/templates/film/film.html'
+        }
+    };
+});
+
+directives.directive('uploadImg', function() {
+    return {
+        restrict: 'E',
+        scope: false,
+        templateUrl: function(elem, attr) {
+            return '/assets/adminAngular/app/templates/remote_diagnose/upload_img.html'
+        }
+    };
+});
+
+directives.directive('patientForm', function() {
+    return {
+        restrict: 'E',
+        scope: false,
+        templateUrl: function(elem, attr) {
+            return '/assets/adminAngular/app/templates/remote_diagnose/patient_form.html'
         }
     };
 });
