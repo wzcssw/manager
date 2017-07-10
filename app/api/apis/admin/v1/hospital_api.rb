@@ -1,5 +1,10 @@
 class Admin::V1::HospitalAPI < Grape::API
   resources :hospitals do
+
+    before do
+      user_authenticate!
+    end
+
     desc "医院"
     get :get_page_data do # /api/admin/v1/hospitals/get_page_data
       h_arr = Hospital.GetShowData(params)

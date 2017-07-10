@@ -1,5 +1,6 @@
 class TxmanagerAPI < Grape::API
   format :json
+  helpers SessionHelpers
 
   namespace :admin do
     namespace :v1 do

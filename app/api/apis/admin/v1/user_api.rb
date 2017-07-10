@@ -1,5 +1,10 @@
 class Admin::V1::UserAPI < Grape::API
   resources :users do
+
+    before do
+      user_authenticate!
+    end
+
     desc "用户列表"
     get :get_page_data do
         @users = User.order("created_at DESC").page(params[:page]).per(params[:page_size])

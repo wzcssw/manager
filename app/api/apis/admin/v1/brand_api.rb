@@ -1,5 +1,9 @@
 class Admin::V1::BrandAPI < Grape::API
   resources :brands do
+    
+    before do
+      user_authenticate!
+    end
 
     desc "厂商列表"
     get :get_page_data do

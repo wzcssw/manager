@@ -1,5 +1,9 @@
 class Admin::V1::AdministratorAPI < Grape::API
   resources :administrators do
+
+    before do
+      user_authenticate!
+    end
       
     desc "管理员列表"
     get :get_page_data do # /api/admin/v1/administrators/get_page_data

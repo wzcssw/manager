@@ -1,6 +1,10 @@
 class Admin::V1::DiagnoseCentersAPI < Grape::API
   resources :diagnose_centers do
 
+    before do
+      user_authenticate!
+    end
+
     desc "阅片中心"
     get :get_page_data do
         @dc = DiagnoseCenter.page(params[:page]).per(params[:page_size])

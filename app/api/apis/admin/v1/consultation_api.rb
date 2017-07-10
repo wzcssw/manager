@@ -1,6 +1,10 @@
 class Admin::V1::ConsultationAPI < Grape::API
   resources :consultations do
 
+    before do
+      user_authenticate!
+    end
+
     desc "会诊中心列表"
     get :get_consultations do # /api/admin/v1/consultations/get_consultations
       @consultation_centers = ConsultationCenter.page(params[:page]).per(params[:page_size])
